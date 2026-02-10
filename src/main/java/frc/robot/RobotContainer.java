@@ -18,8 +18,6 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Hopper;
 
 public class RobotContainer {
   private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
@@ -138,8 +136,66 @@ public class RobotContainer {
             .withVelocityY(0)
             .withRotationalRate(0))
             .withTimeout(5.0),
-        // Finally idle for the rest of auton
-        drivetrain.applyRequest(() -> idle));
+            // Finally idle for the rest of auton
+            drivetrain.applyRequest(() -> idle)
+        );
+    }
+  
+  //creates controller (x)in and (a)out
+  CommandXboxController m_OperatorController = new CommandXboxController(1);
+  
+  //intake = intake.java
+  Intake m_Intake = new Intake();
+  Hopper m_Hopper = new Hopper();
+
+  public RobotContainer() {
+  
+    configureBindings();
+
   }
 
+  private void configureBindings() {
+
+    //Intake bind = A 
+    m_OperatorController.a().whileTrue(Commands.startEnd(
+      () -> m_Intake.Intakeball(),() -> m_Intake.Intakestop(),m_Intake));
+
+    //Outtake bind = X
+    m_OperatorController.x().whileTrue(Commands.startEnd(
+      () -> m_Intake.Outtakeball(),() -> m_Intake.Intakestop(),m_Intake));
+
+    //Intake and hopper bind = right bumper
+    
+    m_OperatorController.rightBumper().whileTrue(Commands.startEnd(
+      () -> m_Hopper.HopperTakeIn(),() -> m_Hopper.HopperStop(),m_Hopper));
+
+    m_OperatorController.rightBumper().whileTrue(Commands.startEnd(
+      () -> m_Intake.Intakeball(),() -> m_Intake.Intakestop(),m_Intake));
+
+    //hopper  left bummper 
+    m_OperatorController.leftBumper().whileTrue(Commands.startEnd(
+      () -> m_Hopper.HopperRegurgitate(),() -> m_Hopper.HopperStop(),m_Hopper));
+    
+
+
+    //Wrist up = pov up
+    m_OperatorController.povUp().whileTrue(Commands.startEnd(
+      () -> m_Intake.Wristup(),() -> m_Intake.Wriststop(),m_Intake));
+
+    //Wrist down = POV DOWN
+    m_OperatorController.povUp().whileTrue(Commands.startEnd(
+      () -> m_Intake.Wristdown(),() -> m_Intake.Wriststop(),m_Intake));
+
+      //index in 
+      m_OperatorController.rightBumper().whileTrue(Commands.startEnd(
+      () -> m_Hopper.IndexTakeIn(),() -> m_Hopper.IndexStop(),m_Intake));
+
+      //index out
+      m_OperatorController.leftBumper().whileTrue(Commands.startEnd(
+      () -> m_Hopper.IndexOutTake(),() -> m_Hopper.IndexStop(),m_Intake));
+  }
+
+  public Command getAutonomousCommand() {
+    return Commands.print("No autonomous command configured");
+  }
 }
