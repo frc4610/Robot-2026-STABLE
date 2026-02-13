@@ -7,8 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.lib.Constants.DeviceIds.IntakeIds;
-import frc.robot.lib.Constants.MechConstants.IntakeConstants;
+
 
 public class Intake extends SubsystemBase {
   /** Creates a new intake. */
@@ -28,28 +27,28 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-   public void DragIn() {
+   public void DragIn(double speed) {
     /*Sets the shooter motors intake speed */
-    m_IntakeRoller.set(.1);
+    m_IntakeRoller.set(speed);
   } 
-  public void StopIntakeMotor(){
+  public void StopIntakeMotor(double speed){
     /*sets the shooter motor to shut off */
-    m_IntakeRoller.set(0);
+    m_IntakeRoller.set(speed);
   }
-  public void eject(){
+  public void eject(double speed){
     /*sets the speed that the shooter motor shoots*/
-    m_IntakeRoller.set(-.1);
+    m_IntakeRoller.set(speed);
   }
 
-   public void turnUp() {
+   public void turnUp(double speed) {
     /*sets the rate that the intake wrist articulates */
-    m_IntakeWrist.set(IntakeConstants.kTurnUpSpeed);
+    m_IntakeWrist.set(speed);
   } 
-  public void KillturnMotor(){
-    m_IntakeWrist.set(0);
+  public void KillturnMotor(double speed){
+    m_IntakeWrist.set(speed);
   }
-  public void TurnDown(){
-    m_IntakeRoller.set(-.1);
+  public void TurnDown(double speed){
+    m_IntakeRoller.set(speed);
   }
 
 }

@@ -38,7 +38,7 @@ public class Constants {
         public class HopperIds{
 
             public static final int kHopperMotor = 3;
-
+            public static final int kIndexer = 4;
             public static final int kHopperEncoder_A = 10;
             public static final int kHopperEncoder_B = 11;
         }
@@ -89,6 +89,10 @@ public class Constants {
             public static final double kForwardSpeed = 0.10;
             public static final double kStopHopper = 0.0;
             public static final double KBackwardSpeed = -0.10;
+
+            public static final double kForwardIndexer = 0.10;
+            public static final double kBackwardIndexer = -0.10;
+            public static final double kStopIndexer = 0.0;
 
         }
 

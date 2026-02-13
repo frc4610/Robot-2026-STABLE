@@ -9,13 +9,12 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.lib.Constants.DeviceIds.ClimberIds;
-import frc.robot.lib.Constants.MechConstants.ClimberConstants;
 
 public class Climber extends SubsystemBase {
   /** Creates a new climber. */
   public static TalonFX m_ClimbMotor = new TalonFX(ClimberIds.kClimbMotorid);
 
-//public static Encoder m_ClimbEncoder = new Encoder(ClimberIds.kClimbEncoder_A, ClimberIds.kClimbEncoder_B);
+  public static Encoder m_ClimbEncoder = new Encoder(ClimberIds.kClimbEncoder_A, ClimberIds.kClimbEncoder_B);
 
   public Climber() {
     m_ClimbMotor.setSafetyEnabled(false);
