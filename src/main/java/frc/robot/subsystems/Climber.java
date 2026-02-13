@@ -12,9 +12,9 @@ import frc.robot.lib.Constants;
 
 public class Climber extends SubsystemBase {
   // Climber motor
-  TalonFX m_climberMotor = new TalonFX(0);
+  TalonFX m_climberMotor = new TalonFX(Constants.Climber.climberMotorId);
   // Climber encoder
-  Encoder m_climbEncoder = new Encoder(0, 0);
+  Encoder m_climberEncoder = new Encoder(Constants.Climber.climberEncoder_A, Constants.Climber.climberEncoder_B);
 
   public Climber() {
     m_climberMotor.setSafetyEnabled(false);
@@ -27,15 +27,15 @@ public class Climber extends SubsystemBase {
   }
 
   // Climb motor speeds
-  public void climbUp(double Speed){
+  public void climbUp(){
     m_climberMotor.set(Constants.Climber.climbUpSpeed);
   }
 
-  public void climbDown(double Speed){
+  public void climbDown(){
     m_climberMotor.set(Constants.Climber.climbDownSpeed);
   }
 
-  public void climbStop(double Speed){
+  public void climbStop(){
     m_climberMotor.set(Constants.Climber.climbStop);
   }
 }

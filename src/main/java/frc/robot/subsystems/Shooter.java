@@ -12,13 +12,13 @@ import frc.robot.lib.Constants;
 
 public class Shooter extends SubsystemBase {
   //Shooter motor
-  TalonFX m_rollerMotor = new TalonFX(51);
-  TalonFX m_shooterWrist = new TalonFX(52);
-  TalonFX m_actuatorMotor = new TalonFX(53);
+  TalonFX m_rollerMotor = new TalonFX(Constants.Shooter.rollerMotorId);
+  TalonFX m_shooterWrist = new TalonFX(Constants.Shooter.shooterWristMotorId);
+  TalonFX m_actuatorMotor = new TalonFX(Constants.Shooter.actuatorMotorId);
 
   // Shooter encoder
-  Encoder m_wristEncoder = new Encoder(54, 55);
-  Encoder m_actuatorEncoder = new Encoder(56, 57);
+  Encoder m_shootWristEncoder = new Encoder(Constants.Shooter.shootWristEncoder_A, Constants.Shooter.shootWristEncoder_B);
+  Encoder m_actuatorEncoder = new Encoder(Constants.Shooter.actuatorEncoder_A, Constants.Shooter.actuatorEncoder_B);
 
   public Shooter() {
     // Set safety
@@ -33,35 +33,35 @@ public class Shooter extends SubsystemBase {
   }
 
   // Roller motor speeds
-  public void rollerForward(double Speed){
+  public void rollerForward(){
     m_rollerMotor.set(Constants.Shooter.rollerForwardSpeed);
   }
-  public void rollerBackward(double Speed){
+  public void rollerBackward(){
     m_rollerMotor.set(Constants.Shooter.rollerBackwardSpeed);
   }
-  public void rollerStop(double Speed){
+  public void rollerStop(){
     m_rollerMotor.set(Constants.Shooter.rollerStopSpeed);
   }
 
   // Wrist motor speeds
-  public void shooterWristUp(double Speed){
+  public void shooterWristUp(){
     m_shooterWrist.set(Constants.Shooter.shootWristUpSpeed);
   }
-  public void shooterWristDown(double Speed){
+  public void shooterWristDown(){
     m_shooterWrist.set(Constants.Shooter.shootWristDownSpeed);
   }
-  public void shooterWristStop(double Speed){
+  public void shooterWristStop(){
     m_shooterWrist.set(Constants.Shooter.shootWristUpSpeed);
   }
 
   // Actuator motor speeds
-  public void actuatorPositive(double Speed){
+  public void actuatorPositive(){
     m_actuatorMotor.set(Constants.Shooter.actuatorPositiveSpeed);
   }
-  public void actuatorNegative(double Speed){
+  public void actuatorNegative(){
     m_actuatorMotor.set(Constants.Shooter.actuatorNegativeSpeed);
   }
-  public void actuatorStop(double Speed){
+  public void actuatorStop(){
     m_actuatorMotor.set(Constants.Shooter.actuatorStopSpeed);
   }
 }

@@ -6,13 +6,16 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.lib.Constants;
 
 public class Hopper extends SubsystemBase {
-  /** Creates a new Hopper. */
-  TalonFX m_HopperMotorIO = new TalonFX(0);
-  TalonFX m_HopperMotorIn = new TalonFX(0);
+  // Hopper motors
+  TalonFX m_HopperMotorIO = new TalonFX(Constants.Hopper.hopperMotorIOId);
+  TalonFX m_HopperMotorIn = new TalonFX(Constants.Hopper.hopperMotorInId);
+  // Hopper encoder
+  Encoder m_hopperEncoder = new Encoder(Constants.Hopper.hopperEncoder_A, Constants.Hopper.hopperEncoder_B);
 
   public Hopper() {
     m_HopperMotorIO.setSafetyEnabled(false);

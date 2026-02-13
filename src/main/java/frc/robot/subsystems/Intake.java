@@ -12,10 +12,10 @@ import frc.robot.lib.Constants;
 
 public class Intake extends SubsystemBase {
   // Intake motors
-  TalonFX m_IntakeMotor = new TalonFX(0);
-  TalonFX m_WristMotor = new TalonFX(0);
+  TalonFX m_IntakeMotor = new TalonFX(Constants.Intake.intakeMotorId);
+  TalonFX m_WristMotor = new TalonFX(Constants.Intake.intakeWristMotorId);
   // Intake Encoder
-  Encoder m_intake = new Encoder(0, 0);
+  Encoder m_intakeEncoder = new Encoder(Constants.Intake.intakeEncoder_A, Constants.Intake.intakeEncoder_B);
 
   public Intake() {
     // Set safety
