@@ -12,13 +12,15 @@ import frc.robot.lib.Constants.DeviceIds.HopperIds;
 import frc.robot.lib.Constants.MechConstants.HopperConstants;
 
 public class Hopper extends SubsystemBase {  
-     public static TalonFX m_HopperMotor = new TalonFX(HopperIds.kHopperMotor);
+   public static TalonFX m_HopperMotor = new TalonFX(HopperIds.kHopperMotor); 
+   public static TalonFX m_IndexMotor = new TalonFX(47);
 
-
-    public static Encoder m_HopperEncoder = new Encoder(HopperIds.kHopperEncoder_A, HopperIds.kHopperEncoder_B);
+  /*  public static Encoder m_IndexEncoder = new Encoder(48, 49);
+    public static Encoder m_HopperEncoder = new Encoder(HopperIds.kHopperEncoder_A, HopperIds.kHopperEncoder_B);*/
   /** Creates a new hopper. */
   public Hopper() {
-
+       m_HopperMotor.setSafetyEnabled(false);
+       m_IndexMotor.setSafetyEnabled(false);
   }
 
   @Override
@@ -34,6 +36,12 @@ public class Hopper extends SubsystemBase {
   }
   public void StopMovement(double speed) {
     m_HopperMotor.set(speed);
+  }
+    public void ForwardIndexer(double speed) {
+    m_IndexMotor.set(speed);
+  }
+  public void BackwardIndexer(double speed) {
+    m_IndexMotor.set(speed);
   }
   
 }

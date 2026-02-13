@@ -17,9 +17,25 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
+import frc.robot.lib.Constants.MechConstants.ClimberConstants;
+import frc.robot.lib.Constants.MechConstants.HopperConstants;
+import frc.robot.lib.Constants.MechConstants.IntakeConstants;
+import frc.robot.lib.Constants.MechConstants.ShooterConstants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
+
+    Intake m_Intake = new Intake();
+    Shooter m_shooter = new Shooter();
+    Hopper m_Hopper = new Hopper();
+    Climber m_Climber = new Climber();
+    public final CommandXboxController m_CommandXboxController = new CommandXboxController(0);
+
+    public final CommandXboxController m_OperatorController = new CommandXboxController(1);
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
@@ -38,6 +54,7 @@ public class RobotContainer {
 
     public RobotContainer() {
         configureBindings();
+        OperatorBindings();
     }
 
     private void configureBindings() {
@@ -95,4 +112,78 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> idle)
         );
     }
+    /*bindings for Operator controller */
+    public void OperatorBindings (){
+            /*Intake Bindings*/
+        m_OperatorController.povRight().whileTrue(Commands.startEnd(
+            () -> m_Intake.DragIn(IntakeConstants.kIntakeSpeed), 
+            () -> m_Intake.StopIntakeMotor(IntakeConstants.kKillIntake), 
+            m_Intake));
+
+        m_OperatorController.povLeft().whileTrue(Commands.startEnd(
+            ()-> m_Intake.eject(IntakeConstants.kEjectSpeed), 
+            () -> m_Intake.StopIntakeMotor(IntakeConstants.kKillIntake), 
+            m_Intake));
+
+        m_OperatorController.povUp().whileTrue(Commands.startEnd(
+            ()->  m_Intake.turnUp(IntakeConstants.kTurnUpSpeed),
+            () -> m_Intake.KillturnMotor(IntakeConstants.kKillTurnMotor), 
+            m_Intake));
+
+        m_OperatorController.povDown().whileTrue(Commands.startEnd(
+            () -> m_Intake.TurnDown(IntakeConstants.kTurnDownSpeed), 
+            () -> m_Intake.KillturnMotor(IntakeConstants.kKillTurnMotor),
+            m_Intake)); 
+
+        m_OperatorController.leftBumper().whileTrue(Commands.startEnd(
+            () -> m_Hopper.ForwardIndexer(HopperConstants.kForwardIndexer), 
+            () -> m_Hopper.StopIndexer(HopperConstants.kStopIndexer), 
+            m_Hopper));
+
+        m_OperatorController.rightBumper().whileTrue(Commands.startEnd(
+            () -> m_Hopper.BackwardIndexer(HopperConstants.kBackwardIndexer),
+            () -> m_Hopper.StopIndexer(HopperConstants.kStopIndexer), 
+            m_Hopper));
+
+        m_OperatorController.leftTrigger().whileTrue(Commands.startEnd(
+            () -> m_Hopper.MoveFoward(HopperConstants.kForwardSpeed), 
+            () -> m_Hopper.StopMovement(HopperConstants.kStopHopper), 
+            m_Hopper));
+
+        m_OperatorController.rightTrigger().whileTrue(Commands.startEnd(
+            () -> m_Hopper.MoveBackward(HopperConstants.KBackwardSpeed),
+            () -> m_Hopper.StopMovement(HopperConstants.kStopHopper), 
+            m_Hopper));
+
+        m_OperatorController.y().whileTrue(Commands.startEnd(
+            () -> m_shooter.Shoot(ShooterConstants.kRollerSpeeds), 
+            () -> m_shooter.StopShooting(ShooterConstants.kKillRollers),
+            m_shooter));
+
+        m_OperatorController.a().whileTrue(Commands.startEnd(
+            () -> m_shooter.reverseShoot(ShooterConstants.kReverseRollerSpeeds),
+            () -> m_shooter.StopShooting(ShooterConstants.kKillRollers), 
+            m_shooter));
+
+        m_OperatorController.b().whileTrue(Commands.startEnd(
+            () -> m_shooter.ActuatorCCW(ShooterConstants.kCounterClockwise),
+            () -> m_shooter.ActuatorDie(ShooterConstants.kActuatorDie), 
+            m_shooter));
+
+        m_OperatorController.x().whileTrue(Commands.startEnd(
+            () -> m_shooter.ActuatorCW(ShooterConstants.kClockwise),
+            () -> m_shooter.ActuatorDie(ShooterConstants.kActuatorDie), 
+            m_shooter));
+
+         m_OperatorController.leftStick().whileTrue(Commands.startEnd(
+            () -> m_Climber.Rise(ClimberConstants.kRiseSpeed),
+            () -> m_Climber.stopClimb(ClimberConstants.kStopClimbing),
+            m_Climber));
+        m_OperatorController.rightStick().whileTrue(Commands.startEnd(
+            () -> m_Climber.lower(ClimberConstants.kLowerSpeed),
+            () -> m_Climber.stopClimb(ClimberConstants.kStopClimbing),
+            m_Climber));
+       }
+       
+
 }

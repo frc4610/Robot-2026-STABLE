@@ -16,8 +16,8 @@ public class Shooter extends SubsystemBase {
    public static TalonFX m_Rollermotor = new TalonFX(41);
    public static TalonFX m_ActuatorMotor = new TalonFX(42);
     
-   public static Encoder m_RollerEncoder = new Encoder(43,44);
-   public static Encoder m_ShooterEncoder = new Encoder(45, 46);
+  // public static Encoder m_RollerEncoder = new Encoder(43,44);
+  // public static Encoder m_ShooterEncoder = new Encoder(45, 46);
 
   public Shooter() {
     m_ActuatorMotor.setSafetyEnabled(false);

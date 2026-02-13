@@ -15,7 +15,7 @@ public class Climber extends SubsystemBase {
   /** Creates a new climber. */
   public static TalonFX m_ClimbMotor = new TalonFX(ClimberIds.kClimbMotorid);
 
-  public static Encoder m_ClimbEncoder = new Encoder(ClimberIds.kClimbEncoder_A, ClimberIds.kClimbEncoder_B);
+//public static Encoder m_ClimbEncoder = new Encoder(ClimberIds.kClimbEncoder_A, ClimberIds.kClimbEncoder_B);
 
   public Climber() {
     m_ClimbMotor.setSafetyEnabled(false);
