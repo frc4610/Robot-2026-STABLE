@@ -37,8 +37,11 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     public RobotContainer() {
-        configureBindings();
+       configureBindings();
+        operatorBindings();
     }
+
+    CommandXboxController m_operatorController = new CommandXboxController(0);
 
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
@@ -77,6 +80,81 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
+    private void operatorBindings(){
+    
+        // Hopper out = (left Bumper)
+        m_operatorController.leftBumper().whileTrue(Commands.startEnd(
+            ()-> m_Hopper.hopperRegurgitate(Constants.Hopper.hopperRegurgitateSpeed), 
+            ()-> m_Hopper.hopperStop(), 
+            m_Hopper));
+
+        // Hopper in = (right Bumper)
+        m_operatorController.rightBumper().whileTrue(Commands.startEnd(
+            ()-> m_Hopper.hopperTakeIn(Constants.Hopper.hopperTakeInSpeed), 
+            ()-> m_Hopper.hopperStop(), 
+            m_Hopper));
+
+        // Hopper index backwards = (left Trigger)
+        m_operatorController.leftTrigger().whileTrue(Commands.startEnd(
+            ()-> m_Hopper.indexOutTake(Constants.Hopper.indexOutTakeSpeed), 
+            ()-> m_Hopper.indexStop(), 
+            m_Hopper));
+
+        // Hopper index forwards = (right Trigger)
+        m_operatorController.rightTrigger().whileTrue(Commands.startEnd(
+            ()-> m_Hopper.indexTakeIn(Constants.Hopper.indexTakeInSpeed), 
+            ()-> m_Hopper.indexStop(), 
+            m_Hopper));
+
+        // Shoot = (y)
+        m_operatorController.y().whileTrue(Commands.startEnd(
+            ()-> m_Shooter.rollerForward(Constants.Shooter.rollerForwardSpeed), 
+            ()-> m_Shooter.rollerStop(), 
+            m_Shooter));
+
+        // Shooter  intake = (x)
+        m_operatorController.x().whileTrue(Commands.startEnd(
+            ()-> m_Shooter.actuatorPositive(Constants.Shooter.actuatorPositiveSpeed), 
+            ()-> m_Shooter.actuatorStop(), 
+            m_Shooter));
+
+        // Reverse/adjust = (b)
+        m_operatorController.b().whileTrue(Commands.startEnd(
+            ()-> m_Shooter.rollerBackward(Constants.Shooter.rollerBackwardSpeed), 
+            ()-> m_Shooter.rollerStop(), 
+            m_Shooter));
+
+        // Shooter outake = (a)
+        m_operatorController.a().whileTrue(Commands.startEnd(
+            ()-> m_Shooter.actuatorNegative(Constants.Shooter.actuatorNegativeSpeed), 
+            ()-> m_Shooter.actuatorStop(), 
+            m_Shooter));
+
+        // Intake wrist up = (up arrow)
+        m_operatorController.povUp().whileTrue(Commands.startEnd(
+            ()-> m_intake.wristUp(Constants.Intake.upSetPoint), 
+            ()-> m_intake.wristStop(),
+            m_intake));
+
+        // Intake in = (left arrow)
+        m_operatorController.povLeft().whileTrue(Commands.startEnd(
+            ()-> m_intake.intakeBall(Constants.Intake.inBallSpeed), 
+            ()-> m_intake.intakeStop(), 
+            m_intake));
+
+        // Intake out = (right arrow)
+        m_operatorController.povRight().whileTrue(Commands.startEnd(
+            ()-> m_intake.outakeBall(Constants.Intake.outBallSpeed), 
+            ()-> m_intake.intakeStop(), 
+            m_intake));
+
+        // Intake wrist down = (down arrow)
+        m_operatorController.povDown().whileTrue(Commands.startEnd(
+            ()-> m_intake.wristDown(Constants.Intake.downSetPoint), 
+            ()-> m_intake.wristStop(), 
+            m_intake));
+    }
+
     public Command getAutonomousCommand() {
         // Simple drive forward auton
         final var idle = new SwerveRequest.Idle();
@@ -95,4 +173,5 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> idle)
         );
     }
+
 }
