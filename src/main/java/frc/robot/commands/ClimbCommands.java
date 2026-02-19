@@ -5,47 +5,40 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-
-import frc.robot.lib.Constants.MechConstants.HopperConstants;
-import frc.robot.subsystems.Hopper;
+import frc.robot.lib.Constants.MechConstants.ClimberConstants;
+import frc.robot.subsystems.Climber;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-
-public class HopperCommands extends Command {
-  /** Creates a new HopperCommands. */
-  private final Hopper m_hopper;
+public class ClimbCommands extends Command {
+  /** Creates a new ClimbCommands. */
+  private final Climber m_Climb;
   private final boolean m_On;
 
-  public HopperCommands(Hopper hopper, boolean on) {
+  public ClimbCommands(Climber climber, boolean on) {
     // Use addRequirements() here to declare subsystem dependencies.
-      m_hopper = new Hopper();
-      m_On = on;
-      addRequirements(m_hopper);
-      
-      }
-    
-    // Called when the command is initially scheduled.  
-  @Override
-  public void initialize() {
+    m_Climb = new Climber();
+    m_On = on;
 
+    addRequirements(m_Climb);
   }
+
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_hopper.HopperMovement(m_On, HopperConstants.kForwardIndexer, HopperConstants.KBackwardSpeed);
-    m_hopper.IndexerMovement(m_On, HopperConstants.kForwardIndexer, HopperConstants.kBackwardIndexer);
+    m_Climb.Climbing(m_On, ClimberConstants.kRiseSpeed, ClimberConstants.kLowerSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
-  
 }

@@ -24,13 +24,13 @@ public class Climber extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
-  public void Rise(double speed){
+  public void Climbing(boolean on, double speed, double ReverseSpeed){
+    if (on == true) {
     m_ClimbMotor.set(speed);
-  }
-  public void lower(double speed){
-    m_ClimbMotor.set(speed);
-  }
-  public void stopClimb(double speed){
-    m_ClimbMotor.set(speed);
+    } else if (on != true) {
+      m_ClimbMotor.stopMotor();
+    } else {
+      m_ClimbMotor.set(ReverseSpeed);
+    }
   }
 }

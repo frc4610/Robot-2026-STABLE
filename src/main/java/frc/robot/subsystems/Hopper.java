@@ -28,23 +28,24 @@ public class Hopper extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void MoveFoward(double speed) {
-    m_HopperMotor.set(speed);
+  public void HopperMovement(boolean on, double speed, double ReverseSpeed){
+    if (on == true) {
+      m_HopperMotor.set(speed);
+    } else if(on != true) {
+      m_HopperMotor.stopMotor();
+    } else {
+      m_HopperMotor.set(ReverseSpeed);
+    }
   }
-  public void MoveBackward(double speed) {
-    m_HopperMotor.set(speed);
+
+  public void IndexerMovement(boolean on, double speed, double ReverseSpeed){
+    if (on == true) {
+      m_IndexMotor.set(speed);
+    } else if (on != true){
+      m_IndexMotor.stopMotor();
+    } else {
+      m_HopperMotor.set(ReverseSpeed);
+    }
   }
-  public void StopMovement(double speed) {
-    m_HopperMotor.set(speed);
-  }
-    public void ForwardIndexer(double speed) {
-    m_IndexMotor.set(speed);
-  }
-  public void BackwardIndexer(double speed) {
-    m_IndexMotor.set(speed);
-  }
-   public void StopIndexer(double speed) {
-    m_IndexMotor.set(speed);
-   }
   
 }

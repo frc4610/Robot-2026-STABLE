@@ -6,6 +6,8 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.io.FilenameFilter;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
@@ -15,12 +17,12 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
+import frc.robot.commands.ClimbCommands;
+import frc.robot.commands.HopperCommands;
+import frc.robot.commands.IntakeCommands;
+import frc.robot.commands.ShooterCommands;
+import frc.robot.commands.parallel.IntakeHopperCommands;
 import frc.robot.generated.TunerConstants;
-import frc.robot.lib.Constants.MechConstants.ClimberConstants;
-import frc.robot.lib.Constants.MechConstants.HopperConstants;
-import frc.robot.lib.Constants.MechConstants.IntakeConstants;
-import frc.robot.lib.Constants.MechConstants.ShooterConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Hopper;
@@ -33,8 +35,22 @@ public class RobotContainer {
     Shooter m_shooter = new Shooter();
     Hopper m_Hopper = new Hopper();
     Climber m_Climber = new Climber();
+
+    private final ShooterCommands m_Shoot = new ShooterCommands(m_shooter, true);
+    private final ShooterCommands m_StopShoot = new ShooterCommands(m_shooter, false);
+    private final ShooterCommands m_Acuator = new ShooterCommands(m_shooter, true);
+    private final ShooterCommands m_StopAcuator = new ShooterCommands(m_shooter, false);
+    private final ClimbCommands m_climb = new ClimbCommands(m_Climber, true);
+    private final ClimbCommands m_StopClimb = new ClimbCommands(m_Climber, false);
+    private final IntakeCommands m_Dragin = new IntakeCommands(m_Intake, true);
+    private final IntakeCommands m_stopIntake = new IntakeCommands(m_Intake, false);
+    private final HopperCommands m_MoveForwardIndexer = new HopperCommands(m_Hopper, true);
+    private final HopperCommands m_StopIndexer = new HopperCommands(m_Hopper, false);
+    private final HopperCommands m_HopperMovement = new HopperCommands(m_Hopper, true);
+    private final HopperCommands m_StopHopper = new HopperCommands(m_Hopper, false);
+    private final IntakeHopperCommands m_IntakeAndIndexer = new IntakeHopperCommands(m_Intake, m_Hopper, true);
+    private final IntakeHopperCommands m_StopBoth = new IntakeHopperCommands(m_Intake, m_Hopper, false);
     
-    public final CommandXboxController m_CommandXboxController = new CommandXboxController(0);
     public final CommandXboxController m_OperatorController = new CommandXboxController(1);
 
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -116,74 +132,26 @@ public class RobotContainer {
     /*bindings for Operator controller */
     public void OperatorBindings (){
             /*Intake Bindings*/
-        m_OperatorController.povRight().whileTrue(Commands.startEnd(
-            () -> m_Intake.DragIn(IntakeConstants.kIntakeSpeed), 
-            () -> m_Intake.StopIntakeMotor(IntakeConstants.kKillIntake), 
-            m_Intake));
+        m_OperatorController.povRight().whileTrue(Commands.parallel(
+            m_Dragin, m_stopIntake));
 
-        m_OperatorController.povLeft().whileTrue(Commands.startEnd(
-            ()-> m_Intake.eject(IntakeConstants.kEjectSpeed), 
-            () -> m_Intake.StopIntakeMotor(IntakeConstants.kKillIntake), 
-            m_Intake));
+        m_OperatorController.povLeft().whileTrue(Commands.parallel(
+            m_MoveForwardIndexer, m_StopIndexer)); 
 
-        m_OperatorController.povUp().whileTrue(Commands.startEnd(
-            ()->  m_Intake.turnUp(IntakeConstants.kTurnUpSpeed),
-            () -> m_Intake.KillturnMotor(IntakeConstants.kKillTurnMotor), 
-            m_Intake));
+        m_OperatorController.povDown().whileTrue(Commands.parallel(
+            m_HopperMovement, m_StopHopper));
 
-        m_OperatorController.povDown().whileTrue(Commands.startEnd(
-            () -> m_Intake.TurnDown(IntakeConstants.kTurnDownSpeed), 
-            () -> m_Intake.KillturnMotor(IntakeConstants.kKillTurnMotor),
-            m_Intake)); 
+        m_OperatorController.povUp().whileTrue(Commands.parallel(
+            m_IntakeAndIndexer, m_StopBoth));
 
-        m_OperatorController.leftBumper().whileTrue(Commands.startEnd(
-            () -> m_Hopper.ForwardIndexer(HopperConstants.kForwardIndexer), 
-            () -> m_Hopper.StopIndexer(HopperConstants.kStopIndexer), 
-            m_Hopper));
+        m_OperatorController.x().whileTrue(Commands.parallel(
+            m_climb, m_StopClimb));
 
-        m_OperatorController.rightBumper().whileTrue(Commands.startEnd(
-            () -> m_Hopper.BackwardIndexer(HopperConstants.kBackwardIndexer),
-            () -> m_Hopper.StopIndexer(HopperConstants.kStopIndexer), 
-            m_Hopper));
-
-        m_OperatorController.leftTrigger().whileTrue(Commands.startEnd(
-            () -> m_Hopper.MoveFoward(HopperConstants.kForwardSpeed), 
-            () -> m_Hopper.StopMovement(HopperConstants.kStopHopper), 
-            m_Hopper));
-
-        m_OperatorController.rightTrigger().whileTrue(Commands.startEnd(
-            () -> m_Hopper.MoveBackward(HopperConstants.KBackwardSpeed),
-            () -> m_Hopper.StopMovement(HopperConstants.kStopHopper), 
-            m_Hopper));
-
-        m_OperatorController.y().whileTrue(Commands.startEnd(
-            () -> m_shooter.Shoot(ShooterConstants.kRollerSpeeds), 
-            () -> m_shooter.StopShooting(ShooterConstants.kKillRollers),
-            m_shooter));
-
-        m_OperatorController.a().whileTrue(Commands.startEnd(
-            () -> m_shooter.reverseShoot(ShooterConstants.kReverseRollerSpeeds),
-            () -> m_shooter.StopShooting(ShooterConstants.kKillRollers), 
-            m_shooter));
-
-        m_OperatorController.b().whileTrue(Commands.startEnd(
-            () -> m_shooter.ActuatorCCW(ShooterConstants.kCounterClockwise),
-            () -> m_shooter.ActuatorDie(ShooterConstants.kActuatorDie), 
-            m_shooter));
-
-        m_OperatorController.x().whileTrue(Commands.startEnd(
-            () -> m_shooter.ActuatorCW(ShooterConstants.kClockwise),
-            () -> m_shooter.ActuatorDie(ShooterConstants.kActuatorDie), 
-            m_shooter));
-
-         m_OperatorController.leftStick().whileTrue(Commands.startEnd(
-            () -> m_Climber.Rise(ClimberConstants.kRiseSpeed),
-            () -> m_Climber.stopClimb(ClimberConstants.kStopClimbing),
-            m_Climber));
-        m_OperatorController.rightStick().whileTrue(Commands.startEnd(
-            () -> m_Climber.lower(ClimberConstants.kLowerSpeed),
-            () -> m_Climber.stopClimb(ClimberConstants.kStopClimbing),
-            m_Climber));
+        m_OperatorController.y().whileTrue(Commands.parallel(
+            m_Shoot, m_StopShoot));
+        
+        m_OperatorController.a().whileTrue(Commands.parallel(
+            m_Acuator, m_StopAcuator));
        }
        
 
