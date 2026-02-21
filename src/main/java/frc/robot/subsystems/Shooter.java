@@ -8,15 +8,16 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.lib.Constants.DeviceIds.ShooterIds;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new shooter. */
   /*instantiates motor and encoder ids to the roller subsystem */
-   public static TalonFX m_Rollermotor = new TalonFX(41);
-   public static TalonFX m_ActuatorMotor = new TalonFX(42);
+   public static TalonFX m_Rollermotor = new TalonFX(ShooterIds.kRollerMotor);
+   public static TalonFX m_ActuatorMotor = new TalonFX(ShooterIds.kActuatorMotor);
     
-   public static Encoder m_RollerEncoder = new Encoder(43,44);
-   public static Encoder m_ShooterEncoder = new Encoder(45, 46);
+   public static Encoder m_RollerEncoder = new Encoder(ShooterIds.kRollerEncoder_A,ShooterIds.kRollerEncoder_B);
+   public static Encoder m_ShooterEncoder = new Encoder(ShooterIds.kShooterEncoder_A, ShooterIds.kShooterEncoder_B);
 
   public Shooter() {
     m_ActuatorMotor.setSafetyEnabled(false);

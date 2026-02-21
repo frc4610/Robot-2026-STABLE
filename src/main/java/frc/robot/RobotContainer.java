@@ -6,8 +6,6 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
-import java.io.FilenameFilter;
-
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
@@ -23,6 +21,8 @@ import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.ShooterCommands;
 import frc.robot.commands.parallel.IntakeHopperCommands;
 import frc.robot.generated.TunerConstants;
+import frc.robot.lib.Constants.MechConstants.HopperConstants;
+import frc.robot.lib.Constants.MechConstants.IntakeConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Hopper;
@@ -44,14 +44,13 @@ public class RobotContainer {
     private final ClimbCommands m_StopClimb = new ClimbCommands(m_Climber, false);
     private final IntakeCommands m_Dragin = new IntakeCommands(m_Intake, true);
     private final IntakeCommands m_stopIntake = new IntakeCommands(m_Intake, false);
-    private final HopperCommands m_MoveForwardIndexer = new HopperCommands(m_Hopper, true);
-    private final HopperCommands m_StopIndexer = new HopperCommands(m_Hopper, false);
     private final HopperCommands m_HopperMovement = new HopperCommands(m_Hopper, true);
     private final HopperCommands m_StopHopper = new HopperCommands(m_Hopper, false);
     private final IntakeHopperCommands m_IntakeAndIndexer = new IntakeHopperCommands(m_Intake, m_Hopper, true);
     private final IntakeHopperCommands m_StopBoth = new IntakeHopperCommands(m_Intake, m_Hopper, false);
     
-    public final CommandXboxController m_OperatorController = new CommandXboxController(1);
+    private final CommandXboxController m_OperatorController = new CommandXboxController(1);
+    private final CommandXboxController m_CommandController = new CommandXboxController(2);
 
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -71,7 +70,7 @@ public class RobotContainer {
 
     public RobotContainer() {
         configureBindings();
-        OperatorBindings();
+        CommandOperatorBindings();
     }
 
     private void configureBindings() {
@@ -130,29 +129,41 @@ public class RobotContainer {
         );
     }
     /*bindings for Operator controller */
-    public void OperatorBindings (){
-            /*Intake Bindings*/
-        m_OperatorController.povRight().whileTrue(Commands.parallel(
+    public void CommandOperatorBindings (){
+            /*Intake command Bindings*/
+        m_CommandController.a().whileTrue(Commands.parallel(
             m_Dragin, m_stopIntake));
 
-        m_OperatorController.povLeft().whileTrue(Commands.parallel(
-            m_MoveForwardIndexer, m_StopIndexer)); 
-
-        m_OperatorController.povDown().whileTrue(Commands.parallel(
+        m_CommandController.povDown().whileTrue(Commands.parallel(
             m_HopperMovement, m_StopHopper));
 
-        m_OperatorController.povUp().whileTrue(Commands.parallel(
+        m_CommandController.povUp().whileTrue(Commands.parallel(
             m_IntakeAndIndexer, m_StopBoth));
 
-        m_OperatorController.x().whileTrue(Commands.parallel(
+        m_CommandController.x().whileTrue(Commands.parallel(
             m_climb, m_StopClimb));
 
-        m_OperatorController.y().whileTrue(Commands.parallel(
+        m_CommandController.y().whileTrue(Commands.parallel(
             m_Shoot, m_StopShoot));
         
-        m_OperatorController.a().whileTrue(Commands.parallel(
+        m_CommandController.a().whileTrue(Commands.parallel(
             m_Acuator, m_StopAcuator));
        }
+
+    public void  OperatorBindings () {
+      m_OperatorController.a().whileTrue(Commands.startEnd(
+        () -> m_Intake.IntakeMovement(true, IntakeConstants.kIntakeSpeed, IntakeConstants.kEjectSpeed),
+        () -> m_Intake.IntakeMovement(false, IntakeConstants.kKillIntake, IntakeConstants.kKillIntake),
+        m_Intake));
+      m_OperatorController.b().whileTrue(Commands.startEnd(
+        () -> m_Intake.IntakeWristMovements(true, IntakeConstants.kTurnUpSpeed, IntakeConstants.kTurnDownSpeed), 
+        () -> m_Intake.IntakeWristMovements(false, IntakeConstants.kKillTurnMotor, IntakeConstants.kKillTurnMotor), 
+        m_Intake));
+      m_OperatorController.x().whileTrue(Commands.startEnd(
+        () -> m_Hopper.HopperMovement(false, HopperConstants.kForwardSpeed, HopperConstants.kBackwardIndexer), 
+        () -> m_Hopper.HopperMovement(false, HopperConstants.kStopHopper, HopperConstants.kStopHopper), 
+        m_Hopper));
+    }
        
 
 }

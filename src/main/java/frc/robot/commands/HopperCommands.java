@@ -34,7 +34,7 @@ public class HopperCommands extends Command {
   @Override
   public void execute() {
     m_hopper.HopperMovement(m_On, HopperConstants.kForwardIndexer, HopperConstants.KBackwardSpeed);
-    m_hopper.IndexerMovement(m_On, HopperConstants.kForwardIndexer, HopperConstants.kBackwardIndexer);
+  
   }
 
   // Called once the command ends or is interrupted.

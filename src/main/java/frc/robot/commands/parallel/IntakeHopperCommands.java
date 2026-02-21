@@ -15,10 +15,10 @@ import frc.robot.subsystems.Hopper;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class IntakeHopperCommands extends ParallelCommandGroup {
   /** Creates a new IntakeHopperCommands. */
-  public IntakeHopperCommands(Intake IntakeMovement, Hopper IndexerMovement, boolean on) {
+  public IntakeHopperCommands(Intake IntakeMovement, Hopper HopperMovement, boolean on) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    super(new IntakeCommands(IntakeMovement, on), new HopperCommands(IndexerMovement, on));
+    super(new IntakeCommands(IntakeMovement, on), new HopperCommands(HopperMovement, on));
 
   }
 }

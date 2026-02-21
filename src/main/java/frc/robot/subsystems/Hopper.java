@@ -38,14 +38,5 @@ public class Hopper extends SubsystemBase {
     }
   }
 
-  public void IndexerMovement(boolean on, double speed, double ReverseSpeed){
-    if (on == true) {
-      m_IndexMotor.set(speed);
-    } else if (on != true){
-      m_IndexMotor.stopMotor();
-    } else {
-      m_HopperMotor.set(ReverseSpeed);
-    }
-  }
   
 }

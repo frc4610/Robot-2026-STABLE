@@ -8,40 +8,48 @@ public class Constants {
         public static final int kDriverControllerPort = 0;
         public static final int KOperatorController = 1;
         public static final int kVoltageController = 2;
-      
-        public class ShooterIds {
-            public static final int kActuatorMotor = 41;
-            public static final int kRollerMotor = 42;
-
-            public static final int kActuatorEncoder_A = 43;
-            public static final int kActuatorEncoder_B = 44;
-            public static final int kShooterEncoder_A = 45;
-            public static final int kShooterEncoder_B = 46;
-        }
 
         public class IntakeIds {
 
-            public static final int kIntakeRoller = 4;
-            public static final int kIntakeWrist = 5;
+            public static final int kIntakeRoller = 11;
+            public static final int kIntakeWrist = 12;
 
         }
 
+        public class HopperIds{
+
+            public static final int kHopperMotor = 21;
+            public static final int kIndexer = 22;
+            public static final int kHopperEncoder_A = 23;
+            public static final int kHopperEncoder_B = 24;
+        }
+
+        
         public class ClimberIds{
 
             public static final int kClimbMotorid = 1;
+            
             public static final int kClimbEncoder_A = 1;
             public static final int kClimbEncoder_B = 2;
 
 
         }
 
-        public class HopperIds{
 
-            public static final int kHopperMotor = 3;
-            public static final int kIndexer = 4;
-            public static final int kHopperEncoder_A = 10;
-            public static final int kHopperEncoder_B = 11;
+      
+        public class ShooterIds {
+            public static final int kActuatorMotor = 41;
+            public static final int kRollerMotor = 42;
+
+            public static final int kRollerEncoder_A = 43;
+            public static final int kRollerEncoder_B = 44;
+            public static final int kShooterEncoder_A = 45;
+            public static final int kShooterEncoder_B = 46;
         }
+
+
+
+
     }
     
     public class MechConstants { 
