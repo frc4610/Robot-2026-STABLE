@@ -18,7 +18,12 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
+import frc.robot.lib.Constants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -82,78 +87,83 @@ public class RobotContainer {
     }
 
     private void operatorBindings(){
-    
+        // Import subsystems
+        Intake m_Intake = new Intake();
+        Hopper m_Hopper = new Hopper();
+        Climber m_Climber = new Climber();
+        Shooter m_Shooter = new Shooter();
+
         // Hopper out = (left Bumper)
         m_operatorController.leftBumper().whileTrue(Commands.startEnd(
-            ()-> m_Hopper.hopperRegurgitate(Constants.Hopper.hopperRegurgitateSpeed), 
-            ()-> m_Hopper.hopperStop(), 
+            ()-> m_Hopper.hopperRegurgitate(Constants.MechConstants.HopperMech.hopperRegurgitateSpeed), 
+            ()-> m_Hopper.hopperStop(Constants.MechConstants.HopperMech.hopperStopSpeed), 
             m_Hopper));
 
         // Hopper in = (right Bumper)
         m_operatorController.rightBumper().whileTrue(Commands.startEnd(
-            ()-> m_Hopper.hopperTakeIn(Constants.Hopper.hopperTakeInSpeed), 
-            ()-> m_Hopper.hopperStop(), 
+            ()-> m_Hopper.hopperTakeIn(Constants.MechConstants.HopperMech.indexIntakeSpeed), 
+            ()-> m_Hopper.hopperStop(Constants.MechConstants.HopperMech.hopperStopSpeed), 
             m_Hopper));
 
-        // Hopper index backwards = (left Trigger)
+        // Climber down = (left Trigger)
         m_operatorController.leftTrigger().whileTrue(Commands.startEnd(
-            ()-> m_Hopper.indexOutTake(Constants.Hopper.indexOutTakeSpeed), 
-            ()-> m_Hopper.indexStop(), 
-            m_Hopper));
+            ()-> m_Climber.climbUp(Constants.MechConstants.ClimberMech.climbDownSpeed),
+            ()-> m_Climber.climbStop(Constants.MechConstants.ClimberMech.climberStopSpeed),
+            m_Climber));
 
-        // Hopper index forwards = (right Trigger)
+        // Climber up = (right Trigger)
         m_operatorController.rightTrigger().whileTrue(Commands.startEnd(
-            ()-> m_Hopper.indexTakeIn(Constants.Hopper.indexTakeInSpeed), 
-            ()-> m_Hopper.indexStop(), 
-            m_Hopper));
+            ()-> m_Climber.climbDown(Constants.MechConstants.ClimberMech.climbDownSpeed), 
+            ()-> m_Climber.climbStop(Constants.MechConstants.ClimberMech.climberStopSpeed), 
+            m_Climber));
 
         // Shoot = (y)
         m_operatorController.y().whileTrue(Commands.startEnd(
-            ()-> m_Shooter.rollerForward(Constants.Shooter.rollerForwardSpeed), 
-            ()-> m_Shooter.rollerStop(), 
+            ()-> m_Shooter.rollerForward(Constants.MechConstants.ShooterMech.shootRollerForward), 
+            ()-> m_Shooter.rollerStop(Constants.MechConstants.ShooterMech.shootRollerStop), 
             m_Shooter));
 
         // Shooter  intake = (x)
         m_operatorController.x().whileTrue(Commands.startEnd(
-            ()-> m_Shooter.actuatorPositive(Constants.Shooter.actuatorPositiveSpeed), 
-            ()-> m_Shooter.actuatorStop(), 
+            ()-> m_Shooter.actuatorPositive(Constants.MechConstants.ShooterMech.actuatorPositiveSpeed), 
+            ()-> m_Shooter.actuatorStop(Constants.MechConstants.ShooterMech.actuatorStopSpeed), 
             m_Shooter));
 
         // Reverse/adjust = (b)
         m_operatorController.b().whileTrue(Commands.startEnd(
-            ()-> m_Shooter.rollerBackward(Constants.Shooter.rollerBackwardSpeed), 
-            ()-> m_Shooter.rollerStop(), 
+            ()-> m_Shooter.rollerBackward(Constants.MechConstants.ShooterMech.shootRollerBackward), 
+            ()-> m_Shooter.rollerStop(Constants.MechConstants.ShooterMech.shootRollerStop), 
             m_Shooter));
 
         // Shooter outake = (a)
         m_operatorController.a().whileTrue(Commands.startEnd(
-            ()-> m_Shooter.actuatorNegative(Constants.Shooter.actuatorNegativeSpeed), 
-            ()-> m_Shooter.actuatorStop(), 
+            ()-> m_Shooter.actuatorNegative(Constants.MechConstants.ShooterMech.actuatorNegativeSpeed), 
+            ()-> m_Shooter.actuatorStop(Constants.MechConstants.ShooterMech.actuatorStopSpeed), 
             m_Shooter));
 
         // Intake wrist up = (up arrow)
         m_operatorController.povUp().whileTrue(Commands.startEnd(
-            ()-> m_intake.wristUp(Constants.Intake.upSetPoint), 
-            ()-> m_intake.wristStop(),
-            m_intake));
+            ()-> m_Intake.wristUp(Constants.MechConstants.IntakeMech.intakeWristUpSpeed), 
+            ()-> m_Intake.wristStop(Constants.MechConstants.IntakeMech.intakeWristStopSpeed),
+            m_Intake));
 
         // Intake in = (left arrow)
         m_operatorController.povLeft().whileTrue(Commands.startEnd(
-            ()-> m_intake.intakeBall(Constants.Intake.inBallSpeed), 
-            ()-> m_intake.intakeStop(), 
-            m_intake));
+            ()-> m_Intake.takeInBall(Constants.MechConstants.IntakeMech.inBallSpeed), 
+            ()-> m_Intake.intakeStop(Constants.MechConstants.IntakeMech.intakeStopSpeed), 
+            m_Intake));
 
         // Intake out = (right arrow)
         m_operatorController.povRight().whileTrue(Commands.startEnd(
-            ()-> m_intake.outakeBall(Constants.Intake.outBallSpeed), 
-            ()-> m_intake.intakeStop(), 
-            m_intake));
+            ()-> m_Intake.takeOutBall(Constants.MechConstants.IntakeMech.outBallSpeed), 
+            ()-> m_Intake.intakeStop(Constants.MechConstants.IntakeMech.intakeStopSpeed), 
+            m_Intake));
 
         // Intake wrist down = (down arrow)
         m_operatorController.povDown().whileTrue(Commands.startEnd(
-            ()-> m_intake.wristDown(Constants.Intake.downSetPoint), 
-            ()-> m_intake.wristStop(), 
-            m_intake));
+            ()-> m_Intake.wristDown(Constants.MechConstants.IntakeMech.intakeWristDownSpeed), 
+            ()-> m_Intake.wristStop(Constants.MechConstants.IntakeMech.intakeWristStopSpeed), 
+            m_Intake));
     }
 
     public Command getAutonomousCommand() {

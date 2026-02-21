@@ -5,23 +5,24 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-
 import edu.wpi.first.wpilibj.Encoder;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.lib.Constants;
 
-public class Shooter extends SubsystemBase {
-  //Shooter motor
-  TalonFX m_rollerMotor = new TalonFX(Constants.Shooter.rollerMotorId);
-  TalonFX m_shooterWrist = new TalonFX(Constants.Shooter.shooterWristMotorId);
-  TalonFX m_actuatorMotor = new TalonFX(Constants.Shooter.actuatorMotorId);
 
-  // Shooter encoder
-  Encoder m_shootWristEncoder = new Encoder(Constants.Shooter.shootWristEncoder_A, Constants.Shooter.shootWristEncoder_B);
-  Encoder m_actuatorEncoder = new Encoder(Constants.Shooter.actuatorEncoder_A, Constants.Shooter.actuatorEncoder_B);
+public class Shooter extends SubsystemBase {
+  //Shooter motors
+  TalonFX m_rollerMotor = new TalonFX(Constants.DeviceIds.ShooterIds.shooterRollerMotorId);
+  TalonFX m_shooterWrist = new TalonFX(Constants.DeviceIds.ShooterIds.shooterWristMotorId);
+  TalonFX m_actuatorMotor = new TalonFX(Constants.DeviceIds.ShooterIds.shooterActuatorId);
+
+  // Shooter encoders
+  Encoder m_shootWristEncoder = new Encoder(Constants.DeviceIds.ShooterIds.shooterWristEncoder_A, Constants.DeviceIds.ShooterIds.shooterWristEncoder_B);
+  Encoder m_actuatorEncoder = new Encoder(Constants.DeviceIds.ShooterIds.shootActuatorEncoder_A, Constants.DeviceIds.ShooterIds.shootActuatorEncoder_B);
 
   public Shooter() {
-    // Set safety
+    // Shooter motor safety
     m_rollerMotor.setSafetyEnabled(false);
     m_shooterWrist.setSafetyEnabled(false);
     m_actuatorMotor.setSafetyEnabled(false);
@@ -32,36 +33,36 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  // Roller motor speeds
-  public void rollerForward(){
-    m_rollerMotor.set(Constants.Shooter.rollerForwardSpeed);
+  // Roller set motor speeds
+  public void rollerForward(double speed){
+    m_rollerMotor.set(0);
   }
-  public void rollerBackward(){
-    m_rollerMotor.set(Constants.Shooter.rollerBackwardSpeed);
+  public void rollerBackward(double speed){
+    m_rollerMotor.set(0);
   }
-  public void rollerStop(){
-    m_rollerMotor.set(Constants.Shooter.rollerStopSpeed);
-  }
-
-  // Wrist motor speeds
-  public void shooterWristUp(){
-    m_shooterWrist.set(Constants.Shooter.shootWristUpSpeed);
-  }
-  public void shooterWristDown(){
-    m_shooterWrist.set(Constants.Shooter.shootWristDownSpeed);
-  }
-  public void shooterWristStop(){
-    m_shooterWrist.set(Constants.Shooter.shootWristUpSpeed);
+  public void rollerStop(double speed){
+    m_rollerMotor.set(0);
   }
 
-  // Actuator motor speeds
-  public void actuatorPositive(){
-    m_actuatorMotor.set(Constants.Shooter.actuatorPositiveSpeed);
+  // Wrist set motor speeds
+  public void shooterWristUp(double speed){
+    m_shooterWrist.set(0);
   }
-  public void actuatorNegative(){
-    m_actuatorMotor.set(Constants.Shooter.actuatorNegativeSpeed);
+  public void shooterWristDown(double speed){
+    m_shooterWrist.set(0);
   }
-  public void actuatorStop(){
-    m_actuatorMotor.set(Constants.Shooter.actuatorStopSpeed);
+  public void shooterWristStop(double speed){
+    m_shooterWrist.set(0);
+  }
+
+  // Actuator set motor speeds
+  public void actuatorPositive(double speed){
+    m_actuatorMotor.set(0);
+  }
+  public void actuatorNegative(double speed){
+    m_actuatorMotor.set(0);
+  }
+  public void actuatorStop(double speed){
+    m_actuatorMotor.set(0);
   }
 }
