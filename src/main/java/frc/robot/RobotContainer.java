@@ -15,20 +15,32 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
+import frc.robot.Constants.Constants;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
+import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
+    // Import subsystems
+    Climber m_Climber = new Climber();
+    Hopper m_Hopper = new Hopper();
+    Intake m_Intake = new Intake();
+    PhotonVision m_PhotonVision = new PhotonVision();
+    Shooter m_Shooter = new Shooter();
 
+
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); //Calculates the max speed the robot can turn4
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
 
-    PhotonVision m_PhotonVision = new PhotonVision();
+
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(PhotonVision.MaxAngularRate * 0.1) // Add a 10% deadband
+            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
@@ -36,11 +48,13 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     public static final CommandXboxController joystick = PhotonVision.m_DriverController;
+    public static final CommandXboxController m_operatorController = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     public RobotContainer() {
         configureBindings();
+        operatorBindings();
     }
 
     private void configureBindings() {
@@ -78,6 +92,69 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         drivetrain.registerTelemetry(logger::telemeterize);
+    }
+
+    private void operatorBindings() {
+
+        //Hopper Out = Left Bumper
+        m_operatorController.leftBumper().whileTrue(Commands.startEnd(
+            ()-> m_Hopper.hopperRegurgitate(Constants.MechConsants.HopperMech.hopperRegurgitateSpeed), 
+            ()-> m_Hopper.hopperStop(Constants.MechConsants.HopperMech.hopperStopSpeed), 
+            m_Hopper));
+
+        //Hopper In = Right Bumper
+        m_operatorController.rightBumper().whileTrue(Commands.startEnd(
+            ()-> m_Hopper.hopperTakeIn(Constants.MechConsants.HopperMech.hopperIntakeSpeed), 
+            ()-> m_Hopper.hopperStop(Constants.MechConsants.HopperMech.hopperStopSpeed), 
+            m_Hopper));
+
+        //Climber Down = Left Trigger
+        m_operatorController.leftTrigger().whileTrue(Commands.startEnd(
+            ()-> m_Climber.climbDown(Constants.MechConsants.ClimberMech.climbDownSpeed), 
+            ()-> m_Climber.climbStop(Constants.MechConsants.ClimberMech.climbStopSpeed), m_Climber));
+
+        //Climber Up = Right Trigger
+        m_operatorController.rightTrigger().whileTrue(Commands.startEnd(
+            ()-> m_Climber.climbUp(Constants.MechConsants.ClimberMech.climbUpSpeed), 
+            ()-> m_Climber.climbStop(Constants.MechConsants.ClimberMech.climbStopSpeed), 
+            m_Climber));
+
+        //Shoot Balls = Y
+        m_operatorController.y().whileTrue(Commands.startEnd(
+            ()-> m_Shooter.rollerForward(Constants.MechConsants.ShooterMech.shootRollerForwardSpeed), 
+            ()-> m_Shooter.rollerStop(Constants.MechConsants.ShooterMech.shootRolllerStopSpeed), 
+            m_Shooter));
+
+        //Reverse Balls = B
+        m_operatorController.b().whileTrue(Commands.startEnd(
+            ()-> m_Shooter.rollerBackward(Constants.MechConsants.ShooterMech.shootRollerBackwardSpeed),
+            ()-> m_Shooter.rollerStop(Constants.MechConsants.ShooterMech.shootRolllerStopSpeed), 
+            m_Shooter));
+
+        //Intake Wrist move Up = POV Up
+        m_operatorController.povUp().whileTrue(Commands.startEnd(
+            ()-> m_Intake.intakeWristUp(Constants.MechConsants.IntakeMech.intakeWristSpeed),
+            ()-> m_Intake.intakeStop(Constants.MechConsants.IntakeMech.intakeStopSpeed),
+            m_Intake));
+
+        //Intake Balls = POV Left
+        m_operatorController.povLeft().whileTrue(Commands.startEnd(
+            ()-> m_Intake.intakeBall(Constants.MechConsants.IntakeMech.inBallSpeed),
+            ()-> m_Intake.intakeStop(Constants.MechConsants.IntakeMech.intakeStopSpeed),
+            m_Intake));
+
+        //Outtake Balls? = POV Right
+        m_operatorController.povRight().whileTrue(Commands.startEnd(
+            ()-> m_Intake.outakeBall(Constants.MechConsants.IntakeMech.outBallSpeed),
+            ()-> m_Intake.intakeStop(Constants.MechConsants.IntakeMech.intakeStopSpeed),
+            m_Intake));
+
+        //Intake Wrist move Down = POV Down
+        m_operatorController.povDown().whileTrue(Commands.startEnd(
+            ()-> m_Intake.intakeWristDown(Constants.MechConsants.IntakeMech.intakeWristDownSpeed),
+            ()-> m_Intake.intakeWristStop(Constants.MechConsants.IntakeMech.intakeWristStopSpeed),
+            m_Intake));
+    
     }
 
     public Command getAutonomousCommand() {
