@@ -39,9 +39,9 @@ public class Climb extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-//if(manMode!= true) {
-   //   m_ClimbMotor.set(m_climbPID.calculate(m_CLimbEncoder.get(), setpoint));
-  //  }
+  //if(manMode!= true) {
+    //m_ClimbMotor.set(m_climbPID.calculate(m_CLimbEncoder.get(), setpoint));
+   // }
   }
 
   public Command ClimbUp () {

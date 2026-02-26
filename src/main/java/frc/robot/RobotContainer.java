@@ -144,7 +144,7 @@ public class RobotContainer {
       () -> m_Hopper.moveBackwards(HopperConstants.KBackwardSpeed),
       () -> m_Hopper.KillHopper(), 
       m_Hopper));
-    m_OperatorManual.rightBumper().whileTrue(Commands.startEnd(
+    m_OperatorManual.rightTrigger().whileTrue(Commands.startEnd(
         () -> m_shooter.revShoot(ShooterConstants.kReverseRollerSpeeds), 
         () -> m_shooter.stopShooting(), 
         m_shooter));
