@@ -17,9 +17,27 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
+import frc.robot.lib.constants.DeviceIds;
+import frc.robot.lib.constants.MechConstants.ClimberConstants;
+import frc.robot.lib.constants.MechConstants.HopperConstants;
+import frc.robot.lib.constants.MechConstants.IntakeConstants;
+import frc.robot.lib.constants.MechConstants.ShooterConstants;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
+    Intake m_Intake = new Intake();
+    Shooter m_shooter = new Shooter();
+    Hopper m_Hopper = new Hopper();
+    Climb m_Climber = new Climb();
+        public final CommandXboxController m_OperatorManual = new CommandXboxController(DeviceIds.kOperatorController);
+        public final CommandXboxController m_OperatorPID = new CommandXboxController(DeviceIds.kPIDoperatorontrollerport);
+        public final CommandXboxController m_driverController = new CommandXboxController(DeviceIds.kDriverControllerPort);
+
+
   private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
                                                                                       // speed
   private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max
@@ -34,19 +52,17 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
 
-  private final CommandXboxController joystick = new CommandXboxController(0);
+ 
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
   // creates controller (x)in and (a)out
-  CommandXboxController m_OperatorController = new CommandXboxController(1);
 
-  // intake = intake.java
-  Intake m_Intake = new Intake();
-  Hopper m_Hopper = new Hopper();
 
   public RobotContainer() {
     configureBindings();
+    OperatorBindings();
+    PIDControllerBindings();  
   }
 
   private void configureBindings() {
@@ -54,10 +70,10 @@ public class RobotContainer {
     // and Y is defined as to the left according to WPILib convention.
     drivetrain.setDefaultCommand(
         // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
+        drivetrain.applyRequest(() -> drive.withVelocityX(-m_driverController.getLeftY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
-            .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            .withVelocityY(-m_driverController.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(-m_driverController.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
 
     // Idle while the robot is disabled. This ensures the configured
@@ -66,62 +82,23 @@ public class RobotContainer {
     RobotModeTriggers.disabled().whileTrue(
         drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
-    joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-    joystick.b().whileTrue(drivetrain
-        .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+    m_driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    m_driverController.b().whileTrue(drivetrain
+        .applyRequest(() -> point.withModuleDirection(new Rotation2d(-m_driverController.getLeftY(), -m_driverController.getLeftX()))));
 
     // Run SysId routines when holding back/start and X/Y.
     // Note that each routine should be run exactly once in a single log.
-    joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-    joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-    joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-    joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+    m_driverController.back().and(m_driverController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+    m_driverController.back().and(m_driverController.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+    m_driverController.start().and(m_driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+    m_driverController.start().and(m_driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
     // Reset the field-centric heading on left bumper press.
-    joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+    m_driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
     // 6 binds used
-
-    // Intake bind = (a)
-    m_OperatorController.a().whileTrue(Commands.startEnd(
-        () -> m_Intake.Intakeball(), () -> m_Intake.Intakestop(), m_Intake));
-
-    // Intake and hopper bind = (RightBumper)
-    m_OperatorController.rightBumper().whileTrue(Commands.startEnd(
-        () -> m_Hopper.HopperTakeIn(), () -> m_Hopper.HopperStop(), m_Hopper));
-
-    m_OperatorController.rightBumper().whileTrue(Commands.startEnd(
-        () -> m_Intake.Intakeball(), () -> m_Intake.Intakestop(), m_Intake));
-
-    // HopperIN and IndexIn (RightTrigger)
-    m_OperatorController.rightTrigger().whileTrue(Commands.startEnd(
-        () -> m_Hopper.HopperTakeIn(), () -> m_Hopper.HopperStop(), m_Hopper));
-
-    m_OperatorController.rightBumper().whileTrue(Commands.startEnd(
-        () -> m_Hopper.IndexTakeIn(), () -> m_Hopper.IndexStop(), m_Intake));
-
-    // Outtake bind = (X)
-    m_OperatorController.x().whileTrue(Commands.startEnd(
-        () -> m_Intake.Outtakeball(), () -> m_Intake.Intakestop(), m_Intake));
-
-    // hopper Out/Regeguritate = (LeftBumper)
-    m_OperatorController.leftBumper().whileTrue(Commands.startEnd(
-        () -> m_Hopper.HopperRegurgitate(), () -> m_Hopper.HopperStop(), m_Hopper));
-
-    // Wrist up = (pov up)
-    m_OperatorController.povUp().whileTrue(Commands.startEnd(
-        () -> m_Intake.Wristup(), () -> m_Intake.Wriststop(), m_Intake));
-
-    // Wrist down = (Pov Down)
-    m_OperatorController.povUp().whileTrue(Commands.startEnd(
-        () -> m_Intake.Wristdown(), () -> m_Intake.Wriststop(), m_Intake));
-
-    // index out = (b)
-    m_OperatorController.b().whileTrue(Commands.startEnd(
-        () -> m_Hopper.IndexOutTake(), () -> m_Hopper.IndexStop(), m_Intake));
-
   }
 
   public Command getAutonomousCommand() {
@@ -140,62 +117,60 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> idle)
         );
     }
-  
-  //creates controller (x)in and (a)out
-  CommandXboxController m_OperatorController = new CommandXboxController(1);
-  
-  //intake = intake.java
-  Intake m_Intake = new Intake();
-  Hopper m_Hopper = new Hopper();
 
-  public RobotContainer() {
-  
-    configureBindings();
-
-  }
-
-  private void configureBindings() {
-
-    //Intake bind = A 
-    m_OperatorController.a().whileTrue(Commands.startEnd(
-      () -> m_Intake.Intakeball(),() -> m_Intake.Intakestop(),m_Intake));
-
-    //Outtake bind = X
-    m_OperatorController.x().whileTrue(Commands.startEnd(
-      () -> m_Intake.Outtakeball(),() -> m_Intake.Intakestop(),m_Intake));
-
-    //Intake and hopper bind = right bumper
     
-    m_OperatorController.rightBumper().whileTrue(Commands.startEnd(
-      () -> m_Hopper.HopperTakeIn(),() -> m_Hopper.HopperStop(),m_Hopper));
+    public void  OperatorBindings () {
+    m_OperatorManual.a().whileTrue(Commands.startEnd(
+        () -> m_Intake.reverseIntake(IntakeConstants.kEjectSpeed),
+        () -> m_Intake.stopIntake(IntakeConstants.kKillIntake),
+        m_Intake));
+    m_OperatorManual.b().whileTrue(Commands.startEnd(
+        () -> m_Intake.intake(IntakeConstants.kIntakeSpeed), 
+        () -> m_Intake.stopIntake(IntakeConstants.kEjectSpeed), 
+        m_Intake));
+    m_OperatorManual.x().whileTrue(Commands.startEnd(
+        () -> m_Intake.ArticulateUp(IntakeConstants.kTurnUpSpeed), 
+        () -> m_Intake.wristStop(IntakeConstants.kKillTurnMotor), 
+        m_Intake));
+    m_OperatorManual.y().whileTrue(Commands.startEnd(
+        () -> m_Intake.ArticulateDown(IntakeConstants.kTurnUpSpeed), 
+        () -> m_Intake.wristStop(IntakeConstants.kKillTurnMotor), 
+        m_Intake));
+    m_OperatorManual.leftBumper().whileTrue(Commands.startEnd(
+        () -> m_Hopper.moveForward(HopperConstants.kForwardSpeed), 
+        () -> m_Hopper.KillHopper(), 
+        m_Hopper));
+    m_OperatorManual.rightBumper().whileTrue(Commands.startEnd(
+      () -> m_Hopper.moveBackwards(HopperConstants.KBackwardSpeed),
+      () -> m_Hopper.KillHopper(), 
+      m_Hopper));
+    m_OperatorManual.rightBumper().whileTrue(Commands.startEnd(
+        () -> m_shooter.revShoot(ShooterConstants.kReverseRollerSpeeds), 
+        () -> m_shooter.stopShooting(), 
+        m_shooter));
 
-    m_OperatorController.rightBumper().whileTrue(Commands.startEnd(
-      () -> m_Intake.Intakeball(),() -> m_Intake.Intakestop(),m_Intake));
+    m_OperatorManual.leftTrigger().whileTrue(Commands.startEnd(
+        ()-> m_shooter.Shoot(ShooterConstants.kRollerSpeeds), 
+        () -> m_shooter.stopShooting(),
+        m_shooter));
+    m_OperatorManual.povUp().whileTrue(Commands.startEnd(
+        () -> m_Climber.climb(ClimberConstants.kRiseSpeed), 
+        () -> m_Climber.stopClimb(ClimberConstants.kStopClimbing),
+        m_Climber));
+    }
 
-    //hopper  left bummper 
-    m_OperatorController.leftBumper().whileTrue(Commands.startEnd(
-      () -> m_Hopper.HopperRegurgitate(),() -> m_Hopper.HopperStop(),m_Hopper));
-    
+  public void PIDControllerBindings() {
 
+    m_OperatorPID.a().onTrue(m_Intake.WristUp());
+  
+    m_OperatorPID.b().onTrue(m_Intake.WristDown());
 
-    //Wrist up = pov up
-    m_OperatorController.povUp().whileTrue(Commands.startEnd(
-      () -> m_Intake.Wristup(),() -> m_Intake.Wriststop(),m_Intake));
+    m_OperatorPID.x().onTrue(m_Climber.ClimbUp());
 
-    //Wrist down = POV DOWN
-    m_OperatorController.povUp().whileTrue(Commands.startEnd(
-      () -> m_Intake.Wristdown(),() -> m_Intake.Wriststop(),m_Intake));
-
-      //index in 
-      m_OperatorController.rightBumper().whileTrue(Commands.startEnd(
-      () -> m_Hopper.IndexTakeIn(),() -> m_Hopper.IndexStop(),m_Intake));
-
-      //index out
-      m_OperatorController.leftBumper().whileTrue(Commands.startEnd(
-      () -> m_Hopper.IndexOutTake(),() -> m_Hopper.IndexStop(),m_Intake));
+    m_OperatorPID.y().onTrue(m_Climber.ClimbDown());
   }
 
-  public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
-  }
+
+
+
 }
