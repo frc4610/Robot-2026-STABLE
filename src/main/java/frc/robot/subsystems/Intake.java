@@ -21,13 +21,15 @@ public class Intake extends SubsystemBase {
   public static TalonFX m_IntakeRoller = new TalonFX(IntakeIds.IntakeRoller);
   public static TalonFX m_IntakeWrist = new TalonFX(IntakeIds.kIntakeWrist);
 
-  //DutyCycleEncoder m_IntakeEncoder = 
-  //new DutyCycleEncoder(IntakeIds.kIntakeEncoderID, 0,0 );
+  DutyCycleEncoder m_IntakeEncoder = 
+  new DutyCycleEncoder(IntakeIds.kIntakeEncoder, 0,0 );
   
   double roundedAngle;
   Boolean manMode = false;
+  Boolean ifOut = false;
   double setpoint;
-  //PIDController m_wristPID = new PIDController(0, 0, 0);
+  //tbd
+  PIDController m_wristPID = new PIDController(0, 0, 0);
 
   Shuffleboard m_IntakeShuffle;
   ShuffleboardTab m_IntakeTab = Shuffleboard.getTab("Sensors");
@@ -37,39 +39,43 @@ public class Intake extends SubsystemBase {
     m_IntakeRoller.setSafetyEnabled(false);
     m_IntakeWrist.setSafetyEnabled(false);
 
-  //  m_IntakeTab.addDouble("Intake Angle", () -> m_IntakeEncoder.get());
+    m_IntakeEncoder.setInverted(true);
+
+    m_IntakeTab.addDouble("Intake Angle", () -> m_IntakeEncoder.get());
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    //if(manMode != true) {
-   //   m_IntakeWrist.set(m_wristPID.calculate(m_IntakeEncoder.get(), setpoint));
-    //}
+    if(manMode != true) {
+      m_IntakeWrist.set(m_wristPID.calculate(m_IntakeEncoder.get(), setpoint));
+    }
   }
 
-  public Command WristUp () {
+  public Command defaultSetpoint () {
     return Commands.runOnce(() -> {setpoint = IntakeConstants.kIntakeUpPOS;
-    manMode = false;});
+    manMode = false;
+    ifOut = false;});
   }
 
   public Command WristDown () {
     return Commands.runOnce(() -> {setpoint = IntakeConstants.kIntakeDownPOS;
-    manMode = false;});
+    manMode = false;
+    ifOut = true;});
   }
 
- public void intake(double speed) {
+ public void IntakeRollers (double speed) {
     m_IntakeRoller.set(speed);
     manMode = true;
   }
   
-  public void reverseIntake(double speed) {
+  public void reverseIntakeRollers (double speed) {
     m_IntakeRoller.set(speed);
     manMode = true;
   }
 
-  public void stopIntake(double speed) {
-    m_IntakeRoller.set(speed);
+  public void stopIntakeRollers () {
+    m_IntakeRoller.set(IntakeConstants.kKillIntakeRoller);
     manMode = true;
   }
 
@@ -78,17 +84,17 @@ public class Intake extends SubsystemBase {
     manMode = true;
   }
 
-  public void ArticulateDown(double speed) {
+  public void ArticulateDown (double speed) {
     m_IntakeWrist.set(speed);
     manMode = true;
   }
 
-  public void wristStop(double speed) {
-    m_IntakeWrist.set(speed);
+  public void wristStop () {
+    m_IntakeWrist.set(IntakeConstants.kKillIntakeWrist);
     manMode = true;
   }
 
   public void getEncoderapprox () {
-  //  roundedAngle = Math.round(m_IntakeEncoder.get());
+    roundedAngle = Math.round(m_IntakeEncoder.get());
   }
 }

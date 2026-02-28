@@ -6,9 +6,13 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.lib.constants.DeviceIds.HopperIds;
 import frc.robot.lib.constants.MechConstants.HopperConstants;
@@ -19,13 +23,15 @@ public class Hopper extends SubsystemBase {
 
   public static TalonFX m_HopperMotor = new TalonFX(HopperIds.kHopperMotor);
 
-  DutyCycleEncoder m_HopperEncoder =
-  new DutyCycleEncoder(HopperIds.kHopperEncoder, 1,0 );
-
   Boolean manMode = false;
+  double speed = HopperConstants.kForwardHopperSpeed;
 
   Shuffleboard m_HopperShuffle;
   ShuffleboardTab m_HopperTab = Shuffleboard.getTab("Sensors");
+
+  //tbd
+  PIDController m_HopperPID = new PIDController(0, 0, 0);
+
   public Hopper() {
     m_HopperMotor.setSafetyEnabled(false);
 
@@ -34,6 +40,12 @@ public class Hopper extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+  }
+
+  public Command HopperForward () {
+    return Commands.runOnce(() -> { speed = HopperConstants.kForwardHopperSpeed;
+    manMode = false;});
   }
 
   public void moveForward (double speed) {
@@ -41,13 +53,13 @@ public class Hopper extends SubsystemBase {
     manMode = true;
   }
 
-  public void moveBackwards(double speed) {
+  public void moveBackwards (double speed) {
     m_HopperMotor.set(speed);
     manMode = true;
   }
 
-  public void KillHopper() {
-    m_HopperMotor.set(HopperConstants.kStopHopper);
+  public void KillHopper () {
+    m_HopperMotor.set(HopperConstants.kKillHopper);
     manMode = true;
   }
 

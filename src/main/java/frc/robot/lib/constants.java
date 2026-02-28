@@ -9,30 +9,34 @@ public class constants {
         public static final int kPIDoperatorontrollerport = 2;
 
         public class IntakeIds {
+
             public static final int IntakeRoller = 21;
             public static final int kIntakeWrist = 22;
             
-            public static final int kIntakeEncoderID = 23;
+            public static final int kIntakeEncoder = 0;
 
         }
 
         public class HopperIds {
+
             public static final int kHopperMotor = 31;
-            
-            public static final int kHopperEncoder = 32;
+
         }
 
         public class ShooterIds {
+
             public static final int kShooterMotor = 41;
 
-            public static final int kShooterEncoder = 42;
+            public static final int kShooterEncoderI = 1;
+            public static final int kShooterEncoderII = 2;
 
         }
 
         public class climbIds {
+
             public static final int kClimbMotor = 51;
 
-            public static final int kClimbEncoderId = 52;
+            public static final int kClimbEncoderId = 3;
 
         }
 
@@ -44,13 +48,13 @@ public class constants {
 
         public class IntakeConstants {
 
-            public static final double kIntakeSpeed = -0.10;
-            public static final double kEjectSpeed = 0.10;
-            public static final double kKillIntake = 0.0;
+            public static final double kIntakeSpeed = -0.30;
+            public static final double kReverseIntakeSpeed = 0.30;
+            public static final double kKillIntakeRoller = 0.0;
 
-            public static final double kTurnUpSpeed = 0.10;
-            public static final double kKillTurnMotor = 0.0;
-            public static final double kTurnDownSpeed = -0.10;
+            public static final double kIntakeWristUpSpeed = 0.20;
+            public static final double kKillIntakeWrist = 0.0;
+            public static final double kIntakeWristDownSpeed = -0.20;
 
             public static final double kIntakeDownPOS = 0;
             public static final double kIntakeUpPOS = 65;
@@ -61,14 +65,9 @@ public class constants {
         /**Shooter Subsystem Constants */
 
              /* Testing Shooter Speeds */
-            public static final double kRollerSpeeds = 0.10;
-            public static final double kReverseRollerSpeeds = -0.10;
-            public static final double kKillRollers = 0.0;
-
-            /* testing Actuator Speeds */
-            public static final double kClockwise = -0.10;
-            public static final double kCounterClockwise = 0.10;
-            public static final double kActuatorDie = 0.0;
+            public static final double kShootingSpeed = 0.20;
+            public static final double kReverseShooterSpeed = -0.20;
+            public static final double kKillShooter = 0.0;
            
              /** public static final double kEncoderOffset = 0;*/
         }
@@ -76,26 +75,23 @@ public class constants {
 
          public class HopperConstants {
             
-            public static final double kForwardSpeed = 0.10;
-            public static final double kStopHopper = 0.0;
-            public static final double KBackwardSpeed = -0.10;
-
-            public static final double kForwardIndexer = 0.10;
-            public static final double kBackwardIndexer = -0.10;
-            public static final double kStopIndexer = 0.0;
+            public static final double kForwardHopperSpeed = 0.10;
+            public static final double kKillHopper = 0.0;
+            public static final double KBackwardHopperSpeed = -0.10;
 
         }
 
 
-         public class ClimberConstants {
+         public class ClimbConstants {
 
-            public static final  double kRiseSpeed = 0.10;
+            public static final  double kClimbingSpeed = 0.10;
             public static final double kStopClimbing = 0.0;
-            public static final double kLowerSpeed = -0.10;
+            public static final double kLowerClimbSpeed = -0.10;
 
                 //tbd
-            public static final double kStartPOS = 0;
-            public static final double KClimbingPOS = 45;
+            public static final double kHookingPOS = 0;
+            public static final double kClimbingPOS = 30;
+            public static final double kDefence = 0;
 
         }
     }
