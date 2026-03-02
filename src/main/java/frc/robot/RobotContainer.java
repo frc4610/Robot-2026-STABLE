@@ -133,13 +133,13 @@ public class RobotContainer {
         m_Intake));
 
         /* Intake Wrist Bindings */
-    m_OperatorManual.povLeft().whileTrue(Commands.startEnd(
+    m_OperatorManual.povRight().whileTrue(Commands.startEnd(
         () -> m_Intake.ArticulateUp(IntakeConstants.kIntakeWristUpSpeed), 
         () -> m_Intake.wristStop(), 
         m_Intake));
 
-    m_OperatorManual.povRight().whileTrue(Commands.startEnd(
-        () -> m_Intake.ArticulateDown(IntakeConstants.kIntakeWristUpSpeed), 
+    m_OperatorManual.povLeft().whileTrue(Commands.startEnd(
+        () -> m_Intake.ArticulateDown(IntakeConstants.kIntakeWristDownSpeed), 
         () -> m_Intake.wristStop(), 
         m_Intake));
 
@@ -155,23 +155,23 @@ public class RobotContainer {
       m_Hopper));
 
         /* Shooter Bindings */
-    m_OperatorManual.x().whileTrue(Commands.startEnd(
+    m_OperatorManual.y().whileTrue(Commands.startEnd(
         ()-> m_shooter.Shoot(ShooterConstants.kShootingSpeed), 
         () -> m_shooter.stopShooting(),
         m_shooter));
 
-    m_OperatorManual.y().whileTrue(Commands.startEnd(
+    m_OperatorManual.x().whileTrue(Commands.startEnd(
         () -> m_shooter.revShoot(ShooterConstants.kReverseShooterSpeed), 
         () -> m_shooter.stopShooting(), 
         m_shooter));
 
         /*Climber Bindings */
-    m_OperatorManual.povUp().whileTrue(Commands.startEnd(
+    m_OperatorManual.povDown().whileTrue(Commands.startEnd(
         () -> m_Climber.climb(ClimbConstants.kClimbingSpeed), 
         () -> m_Climber.stopClimb(),
         m_Climber));
 
-    m_OperatorManual.povDown().whileTrue(Commands.startEnd(
+    m_OperatorManual.povUp().whileTrue(Commands.startEnd(
         () -> m_Climber.lower(ClimbConstants.kLowerClimbSpeed), 
         () -> m_Climber.stopClimb(), 
         m_Climber));
