@@ -25,8 +25,8 @@ public class Climb extends SubsystemBase {
   new DutyCycleEncoder(climbIds.kClimbEncoderId, 2, 0);
 
     /* Shuffleboard */
-  Shuffleboard m_climbShuffle;
-  ShuffleboardTab m_climbShuffleboard = Shuffleboard.getTab("Climb");
+  static Shuffleboard m_Sensors;
+  static ShuffleboardTab m_SensorsTab = Shuffleboard.getTab("Sensors");
 
   double roundedAngle;
   Boolean manMode = false;
@@ -41,6 +41,9 @@ public class Climb extends SubsystemBase {
     m_ClimbMotor.setSafetyEnabled(false);
     m_CLimbEncoder.setInverted(true);
 
+    
+    m_SensorsTab.addDouble("Climb Angle", () -> m_CLimbEncoder.get());
+
   }
 
   @Override
@@ -52,18 +55,18 @@ public class Climb extends SubsystemBase {
   }
 
     /* Sets the angle of the Climber to be extended */
-  public Command Climbing  () {
+  public Command ClimbingPOS  () {
     return Commands.runOnce(() -> { setpoint = ClimbConstants.kHookingPOS;
     manMode = false;
     });
   }
-  
-  public Command ClimbPOS() {
+
+  public Command HookingClimbPOS() {
     return Commands.runOnce(() -> { setpoint = ClimbConstants.kClimbingPOS;
     manMode = false;});
   }
 
-  public Command defaultSetPoint () {
+  public Command defaultClimbPOS () {
     return Commands.runOnce(() -> { setpoint = ClimbConstants.kDefence;
     manMode = false;});
   }
@@ -86,6 +89,7 @@ public class Climb extends SubsystemBase {
   public void getEncoderapprox () {
     roundedAngle = Math.round(m_CLimbEncoder.get());
   }
+
 
 
 

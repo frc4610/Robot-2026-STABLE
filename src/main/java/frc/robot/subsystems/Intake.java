@@ -31,8 +31,8 @@ public class Intake extends SubsystemBase {
   //tbd
   PIDController m_wristPID = new PIDController(0, 0, 0);
 
-  Shuffleboard m_IntakeShuffle;
-  ShuffleboardTab m_IntakeTab = Shuffleboard.getTab("Sensors");
+  static Shuffleboard m_Sensors;
+  static ShuffleboardTab m_SensorsTab = Shuffleboard.getTab("Sensors");
 
 
   public Intake() {
@@ -41,7 +41,7 @@ public class Intake extends SubsystemBase {
 
     m_IntakeEncoder.setInverted(true);
 
-    m_IntakeTab.addDouble("Intake Angle", () -> m_IntakeEncoder.get());
+    m_SensorsTab.addDouble("Intake Angle", () -> m_IntakeEncoder.get());
   }
 
   @Override
@@ -97,4 +97,5 @@ public class Intake extends SubsystemBase {
   public void getEncoderapprox () {
     roundedAngle = Math.round(m_IntakeEncoder.get());
   }
+
 }

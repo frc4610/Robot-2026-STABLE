@@ -7,12 +7,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.lib.constants.DeviceIds.HopperIds;
 import frc.robot.lib.constants.MechConstants.HopperConstants;
@@ -26,8 +24,8 @@ public class Hopper extends SubsystemBase {
   Boolean manMode = false;
   double speed = HopperConstants.kForwardHopperSpeed;
 
-  Shuffleboard m_HopperShuffle;
-  ShuffleboardTab m_HopperTab = Shuffleboard.getTab("Sensors");
+  static Shuffleboard m_Sensors;
+  static ShuffleboardTab m_SensorsTab = Shuffleboard.getTab("Sensors");
 
   //tbd
   PIDController m_HopperPID = new PIDController(0, 0, 0);

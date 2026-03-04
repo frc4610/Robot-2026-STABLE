@@ -48,8 +48,8 @@ public class constants {
 
         public class IntakeConstants {
 
-            public static final double kIntakeSpeed = -0.1-0;
-            public static final double kReverseIntakeSpeed = 0.10;
+            public static final double kIntakeSpeed = -0.3;
+            public static final double kReverseIntakeSpeed = 0.30;
             public static final double kKillIntakeRoller = 0.0;
 
             public static final double kIntakeWristUpSpeed = 0.20;
@@ -65,8 +65,8 @@ public class constants {
         /**Shooter Subsystem Constants */
 
              /* Testing Shooter Speeds */
-            public static final double kShootingSpeed = 0.15;
-            public static final double kReverseShooterSpeed = -0.15;
+            public static final double kShootingSpeed = 0.25;
+            public static final double kReverseShooterSpeed = -0.25;
             public static final double kKillShooter = 0.0;
            
              /** public static final double kEncoderOffset = 0;*/
@@ -75,18 +75,18 @@ public class constants {
 
          public class HopperConstants {
             
-            public static final double kForwardHopperSpeed = 0.10;
+            public static final double kForwardHopperSpeed = 0.25;
             public static final double kKillHopper = 0.0;
-            public static final double KBackwardHopperSpeed = -0.10;
+            public static final double KBackwardHopperSpeed = -0.25;
 
         }
 
 
          public class ClimbConstants {
 
-            public static final  double kClimbingSpeed = 0.10;
+            public static final  double kClimbingSpeed = 0.20;
             public static final double kStopClimbing = 0.0;
-            public static final double kLowerClimbSpeed = -0.10;
+            public static final double kLowerClimbSpeed = -0.20;
 
                 //tbd
             public static final int kHookingPOS = 0;
