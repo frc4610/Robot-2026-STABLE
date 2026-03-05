@@ -48,8 +48,8 @@ public class constants {
 
         public class IntakeConstants {
 
-            public static final double kIntakeSpeed = -0.3;
-            public static final double kReverseIntakeSpeed = 0.30;
+            public static final double kIntakeSpeed = 0.37;
+            public static final double kReverseIntakeSpeed = -0.37;
             public static final double kKillIntakeRoller = 0.0;
 
             public static final double kIntakeWristUpSpeed = 0.20;
@@ -65,19 +65,20 @@ public class constants {
         /**Shooter Subsystem Constants */
 
              /* Testing Shooter Speeds */
-            public static final double kShootingSpeed = 0.25;
-            public static final double kReverseShooterSpeed = -0.25;
+            public static final double kShootingSpeed1 = 0.32;
+            public static final double kShootingSpeed2 = 0.25;
+            public static final double kReverseShooterSpeed = -0.32;
             public static final double kKillShooter = 0.0;
-           
+           //40 for passing
              /** public static final double kEncoderOffset = 0;*/
         }
 
 
          public class HopperConstants {
             
-            public static final double kForwardHopperSpeed = 0.25;
+            public static final double kForwardHopperSpeed = 0.30;
             public static final double kKillHopper = 0.0;
-            public static final double KBackwardHopperSpeed = -0.25;
+            public static final double KBackwardHopperSpeed = -0.30;
 
         }
 

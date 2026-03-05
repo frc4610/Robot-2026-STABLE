@@ -32,7 +32,7 @@ public class Shooter extends SubsystemBase {
   
   double roundedAngle;
   Boolean manMode = false;
-  double Speed = ShooterConstants.kShootingSpeed;
+  double Speed = ShooterConstants.kShootingSpeed1;
 
     /* Shuffleboard */
   static Shuffleboard m_Sensors;
@@ -49,7 +49,7 @@ public class Shooter extends SubsystemBase {
     m_ShooterEncoder.setInverted(true);
 
     //creates sensor tab for shooter 
-    m_SensorsTab.addDouble("Shooter Speed", () -> m_ShooterEncoder.get());
+
   }
 
   @Override
@@ -58,11 +58,13 @@ public class Shooter extends SubsystemBase {
     if(manMode != true) {
       m_ShooterMotor.set(m_ShooterPID.calculate(m_ShooterEncoder.get(),Speed));
     }
+
+      //  m_SensorsTab.addDouble("Shooter Speed", () -> m_ShooterEncoder.get());
   }
    
   //creates a shooting actions for PID 
   public Command ShootPID () {
-    return Commands.runOnce(() -> {Speed = ShooterConstants.kShootingSpeed;
+    return Commands.runOnce(() -> {Speed = ShooterConstants.kShootingSpeed1;
     manMode = false;});
   }
   
@@ -71,6 +73,8 @@ public class Shooter extends SubsystemBase {
     m_ShooterMotor.set(speed);
     manMode = true;
   }
+
+
   public void revShoot (double speed) {
     m_ShooterMotor.set(speed);
     manMode = true;

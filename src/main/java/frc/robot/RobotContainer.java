@@ -147,12 +147,12 @@ public class RobotContainer {
         /* Intake Roller Bindings */
 
     //binds the Intake forward motion to the A button when pressed
-    m_OperatorManual.a().whileTrue(Commands.startEnd(
+    m_OperatorManual.leftTrigger().whileTrue(Commands.startEnd(
         () -> m_Intake.IntakeRollers(IntakeConstants.kIntakeSpeed), 
         () -> m_Intake.stopIntakeRollers(), 
         m_Intake));
     //Binds the intake backward motion to the B button when pressed
-    m_OperatorManual.b().whileTrue(Commands.startEnd(
+    m_OperatorManual.rightTrigger().whileTrue(Commands.startEnd(
         () -> m_Intake.reverseIntakeRollers(IntakeConstants.kReverseIntakeSpeed),
         () -> m_Intake.stopIntakeRollers(),
         m_Intake));
@@ -187,14 +187,20 @@ public class RobotContainer {
 
         /* Shooter Bindings */
 
-    //Binds the Shooting action to the Y button when pressed
+    //Binds the Shooting action at 32% speed to the y button when pressed
     m_OperatorManual.y().whileTrue(Commands.startEnd(
-        ()-> m_shooter.Shoot(ShooterConstants.kShootingSpeed), 
+        ()-> m_shooter.Shoot(ShooterConstants.kShootingSpeed1), 
         () -> m_shooter.stopShooting(),
         m_shooter));
 
-    //Binds the Reverse shooting motion to the X button when pressed
+    //Binds the Shooter action at 25% speed to the x button when pressed
     m_OperatorManual.x().whileTrue(Commands.startEnd(
+        () -> m_shooter.Shoot(ShooterConstants.kShootingSpeed2), 
+        () -> m_shooter.stopShooting(), 
+        m_shooter));
+
+    //Binds the Reverse shooting motion to the X button when pressed
+    m_OperatorManual.b().whileTrue(Commands.startEnd(
         () -> m_shooter.revShoot(ShooterConstants.kReverseShooterSpeed), 
         () -> m_shooter.stopShooting(), 
         m_shooter));

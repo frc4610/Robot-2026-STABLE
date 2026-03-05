@@ -41,7 +41,6 @@ public class Intake extends SubsystemBase {
 
     m_IntakeEncoder.setInverted(true);
 
-    m_SensorsTab.addDouble("Intake Angle", () -> m_IntakeEncoder.get());
   }
 
   @Override
@@ -50,6 +49,9 @@ public class Intake extends SubsystemBase {
     if(manMode != true) {
       m_IntakeWrist.set(m_wristPID.calculate(m_IntakeEncoder.get(), setpoint));
     }
+    
+   // m_SensorsTab.addDouble("Intake Angle", () -> m_IntakeEncoder.get());
+
   }
 
   public Command defaultSetpoint () {

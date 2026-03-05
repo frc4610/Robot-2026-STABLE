@@ -42,7 +42,7 @@ public class Climb extends SubsystemBase {
     m_CLimbEncoder.setInverted(true);
 
     
-    m_SensorsTab.addDouble("Climb Angle", () -> m_CLimbEncoder.get());
+
 
   }
 
@@ -52,6 +52,7 @@ public class Climb extends SubsystemBase {
   if(manMode!= true) {
     m_ClimbMotor.set(m_climbPID.calculate(m_CLimbEncoder.get(), setpoint));
     }
+   // m_SensorsTab.addDouble("Climb Angle", () -> m_CLimbEncoder.get());
   }
 
     /* Sets the angle of the Climber to be extended */
