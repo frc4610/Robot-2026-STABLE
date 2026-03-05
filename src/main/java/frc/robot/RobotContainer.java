@@ -63,7 +63,7 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
     OperatorBindings();
-    PIDControllerBindings();  
+   // PIDControllerBindings();  
   }
 
   private void configureBindings() {
@@ -139,7 +139,7 @@ public class RobotContainer {
         m_Intake));
 
     m_OperatorManual.povRight().whileTrue(Commands.startEnd(
-        () -> m_Intake.ArticulateDown(IntakeConstants.kIntakeWristUpSpeed), 
+        () -> m_Intake.ArticulateDown(IntakeConstants.kIntakeWristDownSpeed), 
         () -> m_Intake.wristStop(), 
         m_Intake));
 
@@ -177,33 +177,33 @@ public class RobotContainer {
         m_Climber));
     }
 
-  public void PIDControllerBindings() {
+  /*public void PIDControllerBindings() {
 
         /* Intake PID actions */
-    m_OperatorPID.a().onTrue(m_Intake.WristDown());
+    //m_OperatorPID.a().onTrue(m_Intake.WristDown());
 
-    m_OperatorPID.b().onTrue(m_Intake.defaultSetpoint());
+    //m_OperatorPID.b().onTrue(m_Intake.defaultSetpoint());
 
         /* Climbing actions */
-    m_OperatorPID.povCenter().onTrue(m_Climber.defaultSetPoint());
+    //m_OperatorPID.povCenter().onTrue(m_Climber.defaultSetPoint());
 
-    m_OperatorPID.povUp().onTrue(m_Climber.ClimbPOS());
+    //m_OperatorPID.povUp().onTrue(m_Climber.ClimbPOS());
 
-    m_OperatorPID.povDown().onTrue(m_Climber.Climbing());
+   // m_OperatorPID.povDown().onTrue(m_Climber.Climbing());
 
         /* Command for compact/defence mode */
-    m_OperatorPID.leftBumper().onTrue(Commands.parallel(
-        m_Climber.defaultSetPoint().alongWith(m_Intake.defaultSetpoint())));
+   // m_OperatorPID.leftBumper().onTrue(Commands.parallel(
+        //m_Climber.defaultSetPoint().alongWith(m_Intake.defaultSetpoint())));
 
         /* Shooter Speeds */
-    m_OperatorPID.x().onTrue(m_shooter.ShootPID());
+    //m_OperatorPID.x().onTrue(m_shooter.ShootPID());
 
         /* hopper Speeds */
-    m_OperatorPID.leftBumper().onTrue(m_Hopper.HopperForward());
+   // m_OperatorPID.leftBumper().onTrue(m_Hopper.HopperForward());
  
 
 
-  }
+ // }
 
 
 

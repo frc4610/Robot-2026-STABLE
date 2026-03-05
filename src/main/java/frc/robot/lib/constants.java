@@ -84,9 +84,9 @@ public class constants {
 
          public class ClimbConstants {
 
-            public static final  double kClimbingSpeed = 0.10;
+            public static final  double kClimbingSpeed = 0.20;
             public static final double kStopClimbing = 0.0;
-            public static final double kLowerClimbSpeed = -0.10;
+            public static final double kLowerClimbSpeed = -0.20;
 
                 //tbd
             public static final double kHookingPOS = 0;

@@ -17,27 +17,24 @@ import frc.robot.lib.constants.DeviceIds.climbIds;
 import frc.robot.lib.constants.MechConstants.ClimbConstants;
 
 public class Climb extends SubsystemBase {
-    /* Motors */
+
   public static TalonFX  m_ClimbMotor = new TalonFX(climbIds.kClimbMotor);
   
-    /* Encoders */
   DutyCycleEncoder m_CLimbEncoder = 
   new DutyCycleEncoder(climbIds.kClimbEncoderId, 2, 0);
 
-    /* Shuffleboard */
   Shuffleboard m_climbShuffle;
   ShuffleboardTab m_climbShuffleboard = Shuffleboard.getTab("Climb");
 
   double roundedAngle;
   Boolean manMode = false;
-  Boolean Out = false;
+  Boolean out = false;
 
   double setpoint;
   PIDController m_climbPID = new PIDController(0, 0, 0);
 
   /** Creates a new Climb. */
   public Climb() {
-    /* Motor Safety */
     m_ClimbMotor.setSafetyEnabled(false);
     m_CLimbEncoder.setInverted(true);
 
@@ -45,27 +42,28 @@ public class Climb extends SubsystemBase {
 
   @Override
   public void periodic() {
-  // This method will be called once per scheduler run
-  if(manMode!= true) {
-    m_ClimbMotor.set(m_climbPID.calculate(m_CLimbEncoder.get(), setpoint));
+    // This method will be called once per scheduler run
+if(manMode!= true) {
+      m_ClimbMotor.set(m_climbPID.calculate(m_CLimbEncoder.get(), setpoint));
     }
   }
 
-    /* Sets the angle of the Climber to be extended */
-  public Command Climbing  () {
-    return Commands.runOnce(() -> { setpoint = ClimbConstants.kHookingPOS;
-    manMode = false;
-    });
-  }
-  
-  public Command ClimbPOS() {
-    return Commands.runOnce(() -> { setpoint = ClimbConstants.kClimbingPOS;
-    manMode = false;});
+  public Command climbing () {
+    return Commands.runOnce(() ->  { setpoint = ClimbConstants.kHookingPOS;
+      manMode = false;
+      out = true;});
   }
 
-  public Command defaultSetPoint () {
+  public Command ClimbingPOS () {
+    return Commands.runOnce(() -> { setpoint = ClimbConstants.kHookingPOS;
+    manMode = false;
+    out = true;});
+  }
+
+  public Command defaultSetPoint() {
     return Commands.runOnce(() -> { setpoint = ClimbConstants.kDefence;
-    manMode = false;});
+    manMode = false;
+    out = false;});
   }
   
   public void climb (double speed) {
@@ -78,7 +76,7 @@ public class Climb extends SubsystemBase {
     manMode = true;
   }
 
-  public void stopClimb () {
+  public void stopClimb (){
     m_ClimbMotor.set(ClimbConstants.kStopClimbing);
     manMode = true;
   }
@@ -86,7 +84,6 @@ public class Climb extends SubsystemBase {
   public void getEncoderapprox () {
     roundedAngle = Math.round(m_CLimbEncoder.get());
   }
-
 
 
 }
