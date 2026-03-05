@@ -49,7 +49,7 @@ public class Shooter extends SubsystemBase {
     m_ShooterEncoder.setInverted(true);
 
     //creates sensor tab for shooter 
-    m_SensorsTab.addDouble("Shooter Speed", () -> m_ShooterEncoder.get());
+    m_SensorsTab.addDouble("Shooter Speeds", () -> m_ShooterEncoder.get());
   }
 
   @Override
