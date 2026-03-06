@@ -48,16 +48,16 @@ public class constants {
 
         public class IntakeConstants {
 
-            public static final double kIntakeSpeed = -0.30;
-            public static final double kReverseIntakeSpeed = 0.30;
+            public static final double kIntakeSpeed = 0.37;
+            public static final double kReverseIntakeSpeed = -0.37;
             public static final double kKillIntakeRoller = 0.0;
 
             public static final double kIntakeWristUpSpeed = 0.20;
             public static final double kKillIntakeWrist = 0.0;
             public static final double kIntakeWristDownSpeed = -0.20;
 
-            public static final double kIntakeDownPOS = 0;
-            public static final double kIntakeUpPOS = 65;
+            public static final int kIntakeDownPOS = 0;
+            public static final int kIntakeUpPOS = 65;
 
         }
 
@@ -65,19 +65,20 @@ public class constants {
         /**Shooter Subsystem Constants */
 
              /* Testing Shooter Speeds */
-            public static final double kShootingSpeed = 0.20;
-            public static final double kReverseShooterSpeed = -0.20;
+            public static final double kShootingSpeed1 = 0.32;
+            public static final double kShootingSpeed2 = 0.25;
+            public static final double kReverseShooterSpeed = -0.32;
             public static final double kKillShooter = 0.0;
-           
+           //40 for passing
              /** public static final double kEncoderOffset = 0;*/
         }
 
 
          public class HopperConstants {
             
-            public static final double kForwardHopperSpeed = 0.10;
+            public static final double kForwardHopperSpeed = 0.30;
             public static final double kKillHopper = 0.0;
-            public static final double KBackwardHopperSpeed = -0.10;
+            public static final double KBackwardHopperSpeed = -0.30;
 
         }
 
@@ -89,9 +90,9 @@ public class constants {
             public static final double kLowerClimbSpeed = -0.20;
 
                 //tbd
-            public static final double kHookingPOS = 0;
-            public static final double kClimbingPOS = 30;
-            public static final double kDefence = 0;
+            public static final int kHookingPOS = 0;
+            public static final int kClimbingPOS = 30;
+            public static final int kDefence = 0;
 
         }
     }

@@ -23,8 +23,9 @@ public class Climb extends SubsystemBase {
   DutyCycleEncoder m_CLimbEncoder = 
   new DutyCycleEncoder(climbIds.kClimbEncoderId, 2, 0);
 
-  Shuffleboard m_climbShuffle;
-  ShuffleboardTab m_climbShuffleboard = Shuffleboard.getTab("Climb");
+    /* Shuffleboard */
+  static Shuffleboard m_Sensors;
+  static ShuffleboardTab m_SensorsTab = Shuffleboard.getTab("Sensors");
 
   double roundedAngle;
   Boolean manMode = false;
@@ -38,6 +39,9 @@ public class Climb extends SubsystemBase {
     m_ClimbMotor.setSafetyEnabled(false);
     m_CLimbEncoder.setInverted(true);
 
+    
+
+
   }
 
   @Override
@@ -46,21 +50,22 @@ public class Climb extends SubsystemBase {
 if(manMode!= true) {
       m_ClimbMotor.set(m_climbPID.calculate(m_CLimbEncoder.get(), setpoint));
     }
+   // m_SensorsTab.addDouble("Climb Angle", () -> m_CLimbEncoder.get());
   }
 
-  public Command climbing () {
-    return Commands.runOnce(() ->  { setpoint = ClimbConstants.kHookingPOS;
-      manMode = false;
-      out = true;});
-  }
-
-  public Command ClimbingPOS () {
+    /* Sets the angle of the Climber to be extended */
+  public Command ClimbingPOS  () {
     return Commands.runOnce(() -> { setpoint = ClimbConstants.kHookingPOS;
     manMode = false;
-    out = true;});
+    });
   }
 
-  public Command defaultSetPoint() {
+  public Command HookingClimbPOS() {
+    return Commands.runOnce(() -> { setpoint = ClimbConstants.kClimbingPOS;
+    manMode = false;});
+  }
+
+  public Command defaultClimbPOS () {
     return Commands.runOnce(() -> { setpoint = ClimbConstants.kDefence;
     manMode = false;
     out = false;});
@@ -84,6 +89,8 @@ if(manMode!= true) {
   public void getEncoderapprox () {
     roundedAngle = Math.round(m_CLimbEncoder.get());
   }
+
+
 
 
 }
