@@ -25,20 +25,21 @@ public class constants {
 
         public class ShooterIds {
 
-            public static final int kShooterMotor = 41;
+            public static final int kLeftShooterMotor = 41;
+            public static final int kRightShooterMotor = 42;
 
             public static final int kShooterEncoderI = 1;
             public static final int kShooterEncoderII = 2;
 
         }
 
-        public class climbIds {
+      /*   public class climbIds {
 
             public static final int kClimbMotor = 51;
 
             public static final int kClimbEncoderId = 3;
 
-        }
+        }*/
 
 
 

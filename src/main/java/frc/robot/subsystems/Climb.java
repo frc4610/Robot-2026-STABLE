@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+/*package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -18,35 +18,35 @@ import frc.robot.lib.constants.MechConstants.ClimbConstants;
 
 public class Climb extends SubsystemBase {
     /* Motors */
-  public static TalonFX  m_ClimbMotor = new TalonFX(climbIds.kClimbMotor);
+  //public static TalonFX  m_ClimbMotor = new TalonFX(climbIds.kClimbMotor);
   
     /* Encoders */
-  DutyCycleEncoder m_CLimbEncoder = 
-  new DutyCycleEncoder(climbIds.kClimbEncoderId, 2, 0);
+  //DutyCycleEncoder m_CLimbEncoder = 
+  //new DutyCycleEncoder(climbIds.kClimbEncoderId, 2, 0);
 
     /* Shuffleboard */
-  static Shuffleboard m_Sensors;
-  static ShuffleboardTab m_SensorsTab = Shuffleboard.getTab("Sensors");
+  //static Shuffleboard m_Sensors;
+  //static ShuffleboardTab m_SensorsTab = Shuffleboard.getTab("Sensors");
 
-  double roundedAngle;
-  Boolean manMode = false;
-  Boolean Out = false;
+  //double roundedAngle;
+  //Boolean manMode = false;
+  //Boolean Out = false;
 
-  double setpoint;
-  PIDController m_climbPID = new PIDController(0, 0, 0);
+  //double setpoint;
+  //PIDController m_climbPID = new PIDController(0, 0, 0);
 
   /** Creates a new Climb. */
-  public Climb() {
+  /*public Climb() {
     /* Motor Safety */
-    m_ClimbMotor.setSafetyEnabled(false);
+    /*m_ClimbMotor.setSafetyEnabled(false);
     m_CLimbEncoder.setInverted(true);
 
     
 
 
-  }
+  }*/
 
-  @Override
+  /*@Override
   public void periodic() {
   // This method will be called once per scheduler run
   if(manMode!= true) {
@@ -56,7 +56,7 @@ public class Climb extends SubsystemBase {
   }
 
     /* Sets the angle of the Climber to be extended */
-  public Command ClimbingPOS  () {
+  /*public Command ClimbingPOS  () {
     return Commands.runOnce(() -> { setpoint = ClimbConstants.kHookingPOS;
     manMode = false;
     });
@@ -91,7 +91,4 @@ public class Climb extends SubsystemBase {
     roundedAngle = Math.round(m_CLimbEncoder.get());
   }
 
-
-
-
-}
+}*/

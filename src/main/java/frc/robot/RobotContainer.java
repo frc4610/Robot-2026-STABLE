@@ -22,7 +22,6 @@ import frc.robot.lib.constants.MechConstants.ClimbConstants;
 import frc.robot.lib.constants.MechConstants.HopperConstants;
 import frc.robot.lib.constants.MechConstants.IntakeConstants;
 import frc.robot.lib.constants.MechConstants.ShooterConstants;
-import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
@@ -41,7 +40,7 @@ public class RobotContainer {
     public final Hopper m_Hopper = new Hopper();
     
     //Calls the Climb subystems class and makes the actions within it refrencable
-    public final Climb m_Climber = new Climb();
+    //public final Climb m_Climber = new Climb();
 
         /*  Controller Instantiation */
 
@@ -146,12 +145,12 @@ public class RobotContainer {
     public void  OperatorBindings () {
         /* Intake Roller Bindings */
 
-    //binds the Intake forward motion to the A button when pressed
+    //binds the Intake forward motion to the left trigger button when pressed
     m_OperatorManual.leftTrigger().whileTrue(Commands.startEnd(
         () -> m_Intake.IntakeRollers(IntakeConstants.kIntakeSpeed), 
         () -> m_Intake.stopIntakeRollers(), 
         m_Intake));
-    //Binds the intake backward motion to the B button when pressed
+    //Binds the intake backward motion to the right trigger button when pressed
     m_OperatorManual.rightTrigger().whileTrue(Commands.startEnd(
         () -> m_Intake.reverseIntakeRollers(IntakeConstants.kReverseIntakeSpeed),
         () -> m_Intake.stopIntakeRollers(),
@@ -208,7 +207,7 @@ public class RobotContainer {
         /*Climber Bindings */
 
     //binds the Climb Articulation motion to the POV Down Button when pressed 
-    m_OperatorManual.povDown().whileTrue(Commands.startEnd(
+    /*m_OperatorManual.povDown().whileTrue(Commands.startEnd(
         () -> m_Climber.climb(ClimbConstants.kClimbingSpeed), 
         () -> m_Climber.stopClimb(),
         m_Climber));
@@ -217,7 +216,7 @@ public class RobotContainer {
     m_OperatorManual.povUp().whileTrue(Commands.startEnd(
         () -> m_Climber.lower(ClimbConstants.kLowerClimbSpeed), 
         () -> m_Climber.stopClimb(), 
-        m_Climber));
+        m_Climber));*/
     }
 
   public void PIDControllerBindings() {
@@ -232,17 +231,17 @@ public class RobotContainer {
 
         /* Climbing actions */
     //Binds the Climb movement to the default climb position to occur when button povCenter is pressed
-    m_OperatorPID.povCenter().onTrue(m_Climber.defaultClimbPOS());
+   // m_OperatorPID.povCenter().onTrue(m_Climber.defaultClimbPOS());
 
     //Binds the Climb movement to the hooking position to occur when button povUp is pressed 
-    m_OperatorPID.povUp().onTrue(m_Climber.HookingClimbPOS());
+    //m_OperatorPID.povUp().onTrue(m_Climber.HookingClimbPOS());
 
     //Binds the Climb movement to the climbing position to occur when the button povDown is pressed
-    m_OperatorPID.povDown().onTrue(m_Climber.ClimbingPOS());
+    //m_OperatorPID.povDown().onTrue(m_Climber.ClimbingPOS());
 
         /* Command for compact/defence mode */
-    m_OperatorPID.leftBumper().onTrue(Commands.parallel(
-        m_Climber.defaultClimbPOS().alongWith(m_Intake.defaultSetpoint())));
+  //  m_OperatorPID.leftBumper().onTrue(Commands.parallel(
+       // m_Climber.defaultClimbPOS().alongWith(m_Intake.defaultSetpoint())));
 
         /* Shooter Speeds */
     m_OperatorPID.x().onTrue(m_shooter.ShootPID());

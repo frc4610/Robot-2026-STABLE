@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -21,7 +22,8 @@ public class Shooter extends SubsystemBase {
     /* Motor */
 
   //creates a shooter motor and binds it to ID 41
-  public static TalonFX m_ShooterMotor = new TalonFX(ShooterIds.kShooterMotor);
+  public static TalonFX m_LeftShooterMotor = new TalonFX(ShooterIds.kLeftShooterMotor);
+  public static TalonFX m_RightShooterMotor = new TalonFX(ShooterIds.kRightShooterMotor);
 
     /* Encoder */
 
@@ -43,10 +45,15 @@ public class Shooter extends SubsystemBase {
 
   public Shooter() {
     //sets safty for shooter motor
-    m_ShooterMotor.setSafetyEnabled(false);
+
+    m_LeftShooterMotor.setSafetyEnabled(false);
+    m_RightShooterMotor.setSafetyEnabled(false);
     
     //sets the shooter endcoder to inverted 
     m_ShooterEncoder.setInverted(true);
+
+    //m_LeftShooterMotor.setControl(new Follower(ShooterIds.kRightShooterMotor,false));
+
 
     //creates sensor tab for shooter 
 
@@ -56,7 +63,7 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     if(manMode != true) {
-      m_ShooterMotor.set(m_ShooterPID.calculate(m_ShooterEncoder.get(),Speed));
+      m_LeftShooterMotor.set(m_ShooterPID.calculate(m_ShooterEncoder.get(),Speed));
     }
 
       //  m_SensorsTab.addDouble("Shooter Speed", () -> m_ShooterEncoder.get());
@@ -70,17 +77,20 @@ public class Shooter extends SubsystemBase {
   
   //sest the shooting speed to a double 
   public void Shoot (double speed) {
-    m_ShooterMotor.set(speed);
+    m_LeftShooterMotor.set(speed);
+    m_RightShooterMotor.set(speed);
     manMode = true;
   }
 
 
   public void revShoot (double speed) {
-    m_ShooterMotor.set(speed);
+    m_LeftShooterMotor.set(speed);
+    m_RightShooterMotor.set(speed);
     manMode = true;
   }
   public void stopShooting () {
-    m_ShooterMotor.set(ShooterConstants.kKillShooter);
+    m_LeftShooterMotor.set(ShooterConstants.kKillShooter);
+    m_RightShooterMotor.set(ShooterConstants.kKillShooter);
     manMode = true;
   }
 
