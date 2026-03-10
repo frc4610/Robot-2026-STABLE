@@ -22,8 +22,13 @@ public class Shooter extends SubsystemBase {
     /* Motor */
 
   //creates a shooter motor and binds it to ID 41
+<<<<<<< HEAD
   public static TalonFX m_LeftShooterMotor = new TalonFX(ShooterIds.kLeftShooterMotor);
   public static TalonFX m_RightShooterMotor = new TalonFX(ShooterIds.kRightShooterMotor);
+=======
+  public static TalonFX m_ShooterMotor = new TalonFX(ShooterIds.kRightShooterMotor);
+  public static TalonFX m_RightShooterMotor = new TalonFX(ShooterIds.kLeftShooterMotor);
+>>>>>>> ac094b0bde1cb6a143dd96368569503a29152f13
 
     /* Encoder */
 
@@ -45,12 +50,16 @@ public class Shooter extends SubsystemBase {
 
   public Shooter() {
     //sets safty for shooter motor
+<<<<<<< HEAD
 
     m_LeftShooterMotor.setSafetyEnabled(false);
+=======
+    m_ShooterMotor.setSafetyEnabled(false);
+>>>>>>> ac094b0bde1cb6a143dd96368569503a29152f13
     m_RightShooterMotor.setSafetyEnabled(false);
     
     //sets the shooter endcoder to inverted 
-    m_ShooterEncoder.setInverted(true);
+    m_ShooterEncoder.setInverted(false);
 
     //m_LeftShooterMotor.setControl(new Follower(ShooterIds.kRightShooterMotor,false));
 
@@ -76,20 +85,35 @@ public class Shooter extends SubsystemBase {
   }
   
   //sest the shooting speed to a double 
+<<<<<<< HEAD
   public void Shoot (double speed) {
     m_LeftShooterMotor.set(speed);
     m_RightShooterMotor.set(speed);
+=======
+  public void Shoot (double speed, double speed2) {
+    m_ShooterMotor.set(speed);
+    m_RightShooterMotor.set(speed2);
+>>>>>>> ac094b0bde1cb6a143dd96368569503a29152f13
     manMode = true;
   }
 
 
+<<<<<<< HEAD
   public void revShoot (double speed) {
     m_LeftShooterMotor.set(speed);
+=======
+  public void revShoot (double speed, double speed2) {
+    m_ShooterMotor.set(speed);
+>>>>>>> ac094b0bde1cb6a143dd96368569503a29152f13
     m_RightShooterMotor.set(speed);
     manMode = true;
   }
   public void stopShooting () {
+<<<<<<< HEAD
     m_LeftShooterMotor.set(ShooterConstants.kKillShooter);
+=======
+    m_ShooterMotor.set(ShooterConstants.kKillShooter);
+>>>>>>> ac094b0bde1cb6a143dd96368569503a29152f13
     m_RightShooterMotor.set(ShooterConstants.kKillShooter);
     manMode = true;
   }

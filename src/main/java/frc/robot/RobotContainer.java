@@ -18,10 +18,11 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.lib.constants.DeviceIds;
-import frc.robot.lib.constants.MechConstants.ClimbConstants;
+//import frc.robot.lib.constants.MechConstants.ClimbConstants;
 import frc.robot.lib.constants.MechConstants.HopperConstants;
 import frc.robot.lib.constants.MechConstants.IntakeConstants;
 import frc.robot.lib.constants.MechConstants.ShooterConstants;
+//import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
@@ -40,6 +41,7 @@ public class RobotContainer {
     public final Hopper m_Hopper = new Hopper();
     
     //Calls the Climb subystems class and makes the actions within it refrencable
+    //public final Climb m_Climber = new Climb();
     //public final Climb m_Climber = new Climb();
 
         /*  Controller Instantiation */
@@ -159,13 +161,13 @@ public class RobotContainer {
         /* Intake Wrist Bindings */
 
     //Binds the Intake Wrist UpWard movement to the POV Right button when pressed
-    m_OperatorManual.povRight().whileTrue(Commands.startEnd(
+    m_OperatorManual.povUp().whileTrue(Commands.startEnd(
         () -> m_Intake.ArticulateUp(IntakeConstants.kIntakeWristUpSpeed), 
         () -> m_Intake.wristStop(), 
         m_Intake));
 
     //Binds the Intake Wrist DownWard movement to the POV left button when pressed 
-    m_OperatorManual.povLeft().whileTrue(Commands.startEnd(
+    m_OperatorManual.povDown().whileTrue(Commands.startEnd(
         () -> m_Intake.ArticulateDown(IntakeConstants.kIntakeWristDownSpeed), 
         () -> m_Intake.wristStop(), 
         m_Intake));
@@ -173,13 +175,13 @@ public class RobotContainer {
         /* Hopper Bindings */
     
     //Binds the Hopper Forward movement to the Left Bumper Button when pressed 
-    m_OperatorManual.leftBumper().whileTrue(Commands.startEnd(
+    m_OperatorManual.rightBumper().whileTrue(Commands.startEnd(
         () -> m_Hopper.moveForward(HopperConstants.kForwardHopperSpeed), 
         () -> m_Hopper.KillHopper(), 
         m_Hopper));
         
     //Binds the Hopper Backward movement to the Right Bumper when pressed
-    m_OperatorManual.rightBumper().whileTrue(Commands.startEnd(
+    m_OperatorManual.leftBumper().whileTrue(Commands.startEnd(
       () -> m_Hopper.moveBackwards(HopperConstants.KBackwardHopperSpeed),
       () -> m_Hopper.KillHopper(), 
       m_Hopper));
@@ -197,23 +199,28 @@ public class RobotContainer {
         () -> m_shooter.Shoot(ShooterConstants.kShootingSpeed2), 
         () -> m_shooter.stopShooting(), 
         m_shooter));
+    //binds
+    m_OperatorManual.a().whileTrue(Commands.startEnd(
+        () -> m_shooter.Shoot(ShooterConstants.kPassingSpeed, ShooterConstants.kPassingSpeed),
+        () -> m_shooter.stopShooting(),
+        m_shooter));
 
     //Binds the Reverse shooting motion to the X button when pressed
     m_OperatorManual.b().whileTrue(Commands.startEnd(
-        () -> m_shooter.revShoot(ShooterConstants.kReverseShooterSpeed), 
+        () -> m_shooter.revShoot(ShooterConstants.kReverseShooterSpeed, ShooterConstants.kReverseShooterSpeed), 
         () -> m_shooter.stopShooting(), 
         m_shooter));
 
         /*Climber Bindings */
 
     //binds the Climb Articulation motion to the POV Down Button when pressed 
-    /*m_OperatorManual.povDown().whileTrue(Commands.startEnd(
+   /*  m_OperatorManual.povRight().whileTrue(Commands.startEnd(
         () -> m_Climber.climb(ClimbConstants.kClimbingSpeed), 
         () -> m_Climber.stopClimb(),
         m_Climber));
 
     //Binds the Climb Lowering Articulation motion to the POV Up button when pressed
-    m_OperatorManual.povUp().whileTrue(Commands.startEnd(
+    m_OperatorManual.povLeft().whileTrue(Commands.startEnd(
         () -> m_Climber.lower(ClimbConstants.kLowerClimbSpeed), 
         () -> m_Climber.stopClimb(), 
         m_Climber));*/
@@ -231,23 +238,23 @@ public class RobotContainer {
 
         /* Climbing actions */
     //Binds the Climb movement to the default climb position to occur when button povCenter is pressed
-   // m_OperatorPID.povCenter().onTrue(m_Climber.defaultClimbPOS());
+    //m_OperatorPID.povCenter().onTrue(m_Climber.defaultClimbPOS());
 
     //Binds the Climb movement to the hooking position to occur when button povUp is pressed 
-    //m_OperatorPID.povUp().onTrue(m_Climber.HookingClimbPOS());
+   // m_OperatorPID.povUp().onTrue(m_Climber.HookingClimbPOS());
 
     //Binds the Climb movement to the climbing position to occur when the button povDown is pressed
     //m_OperatorPID.povDown().onTrue(m_Climber.ClimbingPOS());
 
         /* Command for compact/defence mode */
-  //  m_OperatorPID.leftBumper().onTrue(Commands.parallel(
-       // m_Climber.defaultClimbPOS().alongWith(m_Intake.defaultSetpoint())));
+    //m_OperatorPID.leftBumper().onTrue(Commands.parallel(
+        //m_Climber.defaultClimbPOS().alongWith(m_Intake.defaultSetpoint())));
 
         /* Shooter Speeds */
-    m_OperatorPID.x().onTrue(m_shooter.ShootPID());
+    //m_OperatorPID.x().onTrue(m_shooter.ShootPID());
 
         /* hopper Speeds */
-    m_OperatorPID.leftBumper().onTrue(m_Hopper.HopperForward());
+   // m_OperatorPID.leftBumper().onTrue(m_Hopper.HopperForward());
  
 
 

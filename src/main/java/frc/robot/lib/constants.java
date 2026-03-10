@@ -1,3 +1,4 @@
+
 package frc.robot.lib;
 
 public class constants {
@@ -33,7 +34,11 @@ public class constants {
 
         }
 
+<<<<<<< HEAD
       /*   public class climbIds {
+=======
+       /*  public class climbIds {
+>>>>>>> ac094b0bde1cb6a143dd96368569503a29152f13
 
             public static final int kClimbMotor = 51;
 
@@ -49,8 +54,8 @@ public class constants {
 
         public class IntakeConstants {
 
-            public static final double kIntakeSpeed = 0.37;
-            public static final double kReverseIntakeSpeed = -0.37;
+            public static final double kIntakeSpeed = 0.50;
+            public static final double kReverseIntakeSpeed = -0.40;
             public static final double kKillIntakeRoller = 0.0;
 
             public static final double kIntakeWristUpSpeed = 0.20;
@@ -66,7 +71,8 @@ public class constants {
         /**Shooter Subsystem Constants */
 
              /* Testing Shooter Speeds */
-            public static final double kShootingSpeed1 = 0.32;
+            public static final double kPassingSpeed = 0.40;
+            public static final double kShootingSpeed1 = 0.50;
             public static final double kShootingSpeed2 = 0.25;
             public static final double kReverseShooterSpeed = -0.32;
             public static final double kKillShooter = 0.0;
@@ -77,14 +83,14 @@ public class constants {
 
          public class HopperConstants {
             
-            public static final double kForwardHopperSpeed = 0.30;
+            public static final double kForwardHopperSpeed = 0.40;
             public static final double kKillHopper = 0.0;
-            public static final double KBackwardHopperSpeed = -0.30;
+            public static final double KBackwardHopperSpeed = -0.40;
 
         }
 
 
-         public class ClimbConstants {
+         /*public class ClimbConstants {
 
             public static final  double kClimbingSpeed = 0.20;
             public static final double kStopClimbing = 0.0;
@@ -95,7 +101,7 @@ public class constants {
             public static final int kClimbingPOS = 30;
             public static final int kDefence = 0;
 
-        }
+        }*/
     }
     
 }

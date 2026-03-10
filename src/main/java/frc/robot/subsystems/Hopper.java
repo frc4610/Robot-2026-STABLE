@@ -38,25 +38,24 @@ public class Hopper extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
   }
-
-  public Command HopperForward () {
+    public Command HopperForward () {
     return Commands.runOnce(() -> { speed = HopperConstants.kForwardHopperSpeed;
     manMode = false;});
   }
+
 
   public void moveForward (double speed) {
     m_HopperMotor.set(speed);
     manMode = true;
   }
 
-  public void moveBackwards (double speed) {
+  public void moveBackwards(double speed) {
     m_HopperMotor.set(speed);
     manMode = true;
   }
 
-  public void KillHopper () {
+  public void KillHopper() {
     m_HopperMotor.set(HopperConstants.kKillHopper);
     manMode = true;
   }
