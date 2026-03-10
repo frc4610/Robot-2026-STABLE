@@ -21,7 +21,8 @@ public class Shooter extends SubsystemBase {
     /* Motor */
 
   //creates a shooter motor and binds it to ID 41
-  public static TalonFX m_ShooterMotor = new TalonFX(ShooterIds.kShooterMotor);
+  public static TalonFX m_ShooterMotor = new TalonFX(ShooterIds.kRightShooterMotor);
+  public static TalonFX m_RightShooterMotor = new TalonFX(ShooterIds.kLeftShooterMotor);
 
     /* Encoder */
 
@@ -44,9 +45,10 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
     //sets safty for shooter motor
     m_ShooterMotor.setSafetyEnabled(false);
+    m_RightShooterMotor.setSafetyEnabled(false);
     
     //sets the shooter endcoder to inverted 
-    m_ShooterEncoder.setInverted(true);
+    m_ShooterEncoder.setInverted(false);
 
     //creates sensor tab for shooter 
 
@@ -69,18 +71,21 @@ public class Shooter extends SubsystemBase {
   }
   
   //sest the shooting speed to a double 
-  public void Shoot (double speed) {
+  public void Shoot (double speed, double speed2) {
     m_ShooterMotor.set(speed);
+    m_RightShooterMotor.set(speed2);
     manMode = true;
   }
 
 
-  public void revShoot (double speed) {
+  public void revShoot (double speed, double speed2) {
     m_ShooterMotor.set(speed);
+    m_RightShooterMotor.set(speed);
     manMode = true;
   }
   public void stopShooting () {
     m_ShooterMotor.set(ShooterConstants.kKillShooter);
+    m_RightShooterMotor.set(ShooterConstants.kKillShooter);
     manMode = true;
   }
 

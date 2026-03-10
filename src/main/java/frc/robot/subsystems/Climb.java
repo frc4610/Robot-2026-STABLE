@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+/*package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -13,18 +13,18 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.lib.constants.DeviceIds.climbIds;
-import frc.robot.lib.constants.MechConstants.ClimbConstants;
+//import frc.robot.lib.constants.DeviceIds.climbIds;
+//import frc.robot.lib.constants.MechConstants.ClimbConstants;
 
-public class Climb extends SubsystemBase {
+/*public class Climb extends SubsystemBase {
 
-  public static TalonFX  m_ClimbMotor = new TalonFX(climbIds.kClimbMotor);
+  //public static TalonFX  m_ClimbMotor = new TalonFX(climbIds.kClimbMotor);
   
-  DutyCycleEncoder m_CLimbEncoder = 
-  new DutyCycleEncoder(climbIds.kClimbEncoderId, 2, 0);
+ // DutyCycleEncoder m_CLimbEncoder = 
+  //new DutyCycleEncoder(climbIds.kClimbEncoderId, 2, 0);
 
     /* Shuffleboard */
-  static Shuffleboard m_Sensors;
+  /*static Shuffleboard m_Sensors;
   static ShuffleboardTab m_SensorsTab = Shuffleboard.getTab("Sensors");
 
   double roundedAngle;
@@ -35,7 +35,7 @@ public class Climb extends SubsystemBase {
   PIDController m_climbPID = new PIDController(0, 0, 0);
 
   /** Creates a new Climb. */
-  public Climb() {
+  /*public Climb() {
     m_ClimbMotor.setSafetyEnabled(false);
     m_CLimbEncoder.setInverted(true);
 
@@ -54,7 +54,7 @@ if(manMode!= true) {
   }
 
     /* Sets the angle of the Climber to be extended */
-  public Command ClimbingPOS  () {
+ /*  public Command ClimbingPOS  () {
     return Commands.runOnce(() -> { setpoint = ClimbConstants.kHookingPOS;
     manMode = false;
     });
@@ -93,4 +93,4 @@ if(manMode!= true) {
 
 
 
-}
+}*/
