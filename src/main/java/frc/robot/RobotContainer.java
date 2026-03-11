@@ -201,13 +201,13 @@ public class RobotContainer {
         m_shooter));
     //binds
     m_OperatorManual.a().whileTrue(Commands.startEnd(
-        () -> m_shooter.Shoot(ShooterConstants.kPassingSpeed, ShooterConstants.kPassingSpeed),
+        () -> m_shooter.Shoot(ShooterConstants.kPassingSpeed),
         () -> m_shooter.stopShooting(),
         m_shooter));
 
     //Binds the Reverse shooting motion to the X button when pressed
     m_OperatorManual.b().whileTrue(Commands.startEnd(
-        () -> m_shooter.revShoot(ShooterConstants.kReverseShooterSpeed, ShooterConstants.kReverseShooterSpeed), 
+        () -> m_shooter.revShoot(ShooterConstants.kReverseShooterSpeed), 
         () -> m_shooter.stopShooting(), 
         m_shooter));
 
@@ -251,10 +251,10 @@ public class RobotContainer {
         //m_Climber.defaultClimbPOS().alongWith(m_Intake.defaultSetpoint())));
 
         /* Shooter Speeds */
-    //m_OperatorPID.x().onTrue(m_shooter.ShootPID());
+    m_OperatorPID.x().onTrue(m_shooter.ShootPID());
 
         /* hopper Speeds */
-   // m_OperatorPID.leftBumper().onTrue(m_Hopper.HopperForward());
+    //m_OperatorPID.leftBumper().onTrue(m_Hopper.HopperForward());
  
 
 

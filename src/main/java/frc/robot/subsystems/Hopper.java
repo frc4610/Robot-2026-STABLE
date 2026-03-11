@@ -28,7 +28,7 @@ public class Hopper extends SubsystemBase {
   static ShuffleboardTab m_SensorsTab = Shuffleboard.getTab("Sensors");
 
   //tbd
-  PIDController m_HopperPID = new PIDController(0, 0, 0);
+ // PIDController m_HopperPID = new PIDController(0, 0, 0);
 
   public Hopper() {
     m_HopperMotor.setSafetyEnabled(false);

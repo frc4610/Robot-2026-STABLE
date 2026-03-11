@@ -29,7 +29,7 @@ public class Intake extends SubsystemBase {
   Boolean ifOut = false;
   double setpoint;
   //tbd
-  PIDController m_wristPID = new PIDController(0, 0, 0);
+  //PIDController m_wristPID = new PIDController(0, 0, 0);
 
   static Shuffleboard m_Sensors;
   static ShuffleboardTab m_SensorsTab = Shuffleboard.getTab("Sensors");
@@ -40,17 +40,18 @@ public class Intake extends SubsystemBase {
     m_IntakeWrist.setSafetyEnabled(false);
 
     m_IntakeEncoder.setInverted(true);
+     m_SensorsTab.addDouble("Intake Angle", () -> m_IntakeEncoder.get());
 
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if(manMode != true) {
+    /*if(manMode != true) {
       m_IntakeWrist.set(m_wristPID.calculate(m_IntakeEncoder.get(), setpoint));
-    }
+    }*/
     
-   // m_SensorsTab.addDouble("Intake Angle", () -> m_IntakeEncoder.get());
+
 
   }
 
