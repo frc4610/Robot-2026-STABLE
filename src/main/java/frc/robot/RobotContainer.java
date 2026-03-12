@@ -50,7 +50,7 @@ public class RobotContainer {
     public final CommandXboxController m_OperatorManual = new CommandXboxController(DeviceIds.kOperatorController);
 
     // This controller is mainly used for semi-automated robot mechanism functs
-    public final CommandXboxController m_OperatorPID = new CommandXboxController(DeviceIds.kPIDoperatorontrollerport);
+    public final CommandXboxController m_OperatorPID = new CommandXboxController(5);
 
     //this controller is used for the robot bases movement on the field
     public final CommandXboxController m_driverController = new CommandXboxController(DeviceIds.kDriverControllerPort);
@@ -226,17 +226,62 @@ public class RobotContainer {
         m_Climber));*/
     }
 
-  public void PIDControllerBindings() {
+  public void PIDControllerBindings() {       
+     /* Intake Roller Bindings */
 
-        /* Intake PID actions */
+    //binds the Intake forward motion to the left trigger button when pressed
+    m_OperatorPID.leftTrigger().whileTrue(Commands.startEnd(
+        () -> m_Intake.IntakeRollers(IntakeConstants.kIntakeSpeed), 
+        () -> m_Intake.stopIntakeRollers(), 
+        m_Intake));
+    //Binds the intake backward motion to the right trigger button when pressed
+    m_OperatorPID.rightTrigger().whileTrue(Commands.startEnd(
+        () -> m_Intake.reverseIntakeRollers(IntakeConstants.kReverseIntakeSpeed),
+        () -> m_Intake.stopIntakeRollers(),
+        m_Intake));
 
-    //binds the Intake movement to the lowered wrist position to occur when button A is pressed
-    m_OperatorPID.a().onTrue(m_Intake.WristDown());
+        /* Intake Wrist Bindings */
 
-    //Binds the Intake movement to the default Wrist position to occur when button B is pressed 
-    m_OperatorPID.b().onTrue(m_Intake.defaultSetpoint());
+    //Binds the Intake Wrist UpWard movement to the POV Right button when pressed
+    m_OperatorPID.povUp().whileTrue(Commands.startEnd(
+        () -> m_Intake.ArticulateUp(IntakeConstants.kIntakeWristUpSpeed), 
+        () -> m_Intake.wristStop(), 
+        m_Intake));
 
-        /* Climbing actions */
+    //Binds the Intake Wrist DownWard movement to the POV left button when pressed 
+    m_OperatorPID.povDown().whileTrue(Commands.startEnd(
+        () -> m_Intake.ArticulateDown(IntakeConstants.kIntakeWristDownSpeed), 
+        () -> m_Intake.wristStop(), 
+        m_Intake));
+
+        /* Hopper Bindings */
+    
+    //Binds the Hopper Forward movement to the Left Bumper Button when pressed 
+    m_OperatorPID.rightBumper().whileTrue(Commands.startEnd(
+        () -> m_Hopper.moveForward(HopperConstants.kForwardHopperSpeed), 
+        () -> m_Hopper.KillHopper(), 
+        m_Hopper));
+        
+    //Binds the Hopper Backward movement to the Right Bumper when pressed
+    m_OperatorPID.leftBumper().whileTrue(Commands.startEnd(
+      () -> m_Hopper.moveBackwards(HopperConstants.KBackwardHopperSpeed),
+      () -> m_Hopper.KillHopper(), 
+      m_Hopper));
+  
+        /* Shooter Speeds */
+    m_OperatorPID.x().whileTrue(Commands.startEnd(
+    () -> m_shooter.setVelocityRPS(10),
+    () -> m_shooter.setVelocityRPS(0),
+    m_shooter));
+
+    m_OperatorPID.y().whileTrue(Commands.startEnd(
+    () -> m_shooter.setVelocityRPS(8.35),
+    () -> m_shooter.setVelocityRPS(0),
+    m_shooter));
+
+        /* hopper Speeds */
+    //m_OperatorPID.leftBumper().onTrue(m_Hopper.HopperForward());
+       /* Climbing actions */
     //Binds the Climb movement to the default climb position to occur when button povCenter is pressed
     //m_OperatorPID.povCenter().onTrue(m_Climber.defaultClimbPOS());
 
@@ -250,11 +295,16 @@ public class RobotContainer {
     //m_OperatorPID.leftBumper().onTrue(Commands.parallel(
         //m_Climber.defaultClimbPOS().alongWith(m_Intake.defaultSetpoint())));
 
-        /* Shooter Speeds */
-    m_OperatorPID.x().onTrue(m_shooter.ShootPID());
+            /* Intake PID actions */
 
-        /* hopper Speeds */
-    //m_OperatorPID.leftBumper().onTrue(m_Hopper.HopperForward());
+          //binds the Intake movement to the lowered wrist position to occur when button A is pressed
+    //m_OperatorPID.a().onTrue(m_Intake.WristDown());
+
+    //Binds the Intake movement to the default Wrist position to occur when button B is pressed 
+    //m_OperatorPID.b().onTrue(m_Intake.defaultSetpoint());
+
+     
+
  
 
 

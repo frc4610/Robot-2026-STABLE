@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -28,8 +29,11 @@ public class Intake extends SubsystemBase {
   Boolean manMode = false;
   Boolean ifOut = false;
   double setpoint;
+
+double setpointRPS = 1.0;
   //tbd
-  //PIDController m_wristPID = new PIDController(0, 0, 0);
+  PIDController m_wristPID = new PIDController(0, 0, 0);
+  SimpleMotorFeedforward m_Feedforward = new SimpleMotorFeedforward(1, 0);
 
   static Shuffleboard m_Sensors;
   static ShuffleboardTab m_SensorsTab = Shuffleboard.getTab("Sensors");
@@ -55,6 +59,10 @@ public class Intake extends SubsystemBase {
 
   }
 
+  //public Command RotationsPerSecond() {
+   // double setpointRPS = 1.0;
+   // double feedback = m_wristPID.calculate(m_IntakeWrist.)
+  //}
   public Command defaultSetpoint () {
     return Commands.runOnce(() -> {setpoint = IntakeConstants.kIntakeUpPOS;
     manMode = false;
